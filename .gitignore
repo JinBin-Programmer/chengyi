@@ -1,0 +1,12 @@
+# 旧版本备份
+index.backup*.html
+
+# 原始大视频（网页只用转好的 1-light.mp4 和 2-new.mp4）
+videos/*
+!videos/1-light.mp4
+!videos/2-new.mp4
+
+# 没用到的大图（网页用的是压过的 wallpaper-web.jpg）
+images/wallpaper.jpg
+
+.DS_Store

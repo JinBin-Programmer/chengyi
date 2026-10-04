@@ -1,0 +1,1894 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>稲荷前のバス停</title>
+<meta name="description" content="稲荷前的站牌下，有一部影片和一句话，想先给你看。">
+<meta property="og:title" content="稲荷前のバス停">
+<meta property="og:description" content="稲荷前的站牌下，有一部影片和一句话，想先给你看。">
+<!-- 微信 / Telegram 预览图要写完整网址，比如 https://你的域名/images/couple.png -->
+<meta property="og:image" content="images/couple.png">
+<meta name="theme-color" content="#0d1426">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23d8584d' d='M4 4h12a5 5 0 0 1 8 0h12v12a5 5 0 0 0 0 8v12H24a5 5 0 0 1-8 0H4V24a5 5 0 0 0 0-8Z'/%3E%3C/svg%3E">
+<!-- 字体放在本地（只留了页面用到的字），国内、微信里也能秒开 -->
+<link rel="preload" href="fonts/fonts.css" as="style">
+<link rel="stylesheet" href="fonts/fonts.css" media="print" onload="this.media='all'">
+<link rel="preload" href="images/poster1.jpg" as="image">
+<style>
+  :root {
+    --sky-top: #0d1426;
+    --sky-mid: #18223f;
+    --sky-low: #23304f;
+    --road: #171b28;
+    --road-2: #0f1220;
+    --paper: #fff6f8;
+    --paper-2: #ffe6ee;
+    --paper-edge: #f5cad7;
+    --ink: #4f3540;
+    --ink-soft: #8f6a78;
+    --red: #e2678a;        /* 卡片上的主色：樱花粉 */
+    --red-deep: #c94a72;
+    --pink-soft: #fbd3df;
+    --pink-glow: rgba(255, 150, 185, .35);
+    --lamp: #ffd98a;
+    --lamp-soft: rgba(255, 217, 138, .18);
+    --totoro: #7c848c;
+    --totoro-dark: #5c646c;
+    --totoro-belly: #e6e5d8;
+    --shadow: 0 24px 60px rgba(0, 0, 0, .45);
+    --display: "Ma Shan Zheng", "Noto Serif SC", "Songti SC", "STKaiti", "KaiTi", serif;
+    --body: "Noto Serif SC", "Songti SC", "PingFang SC", "Microsoft YaHei", serif;
+    --jp: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif SC", serif;
+  }
+  html, body { height: 100%; }
+  @supports (height: 100dvh) { html, body { height: 100dvh; } }
+  body {
+    margin: 0;
+    font-family: var(--body);
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-low) 100%);
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ================= 雨夜的公车站 ================= */
+  .scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .scene .stars i {
+    position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #dfe6ff; opacity: .5;
+  }
+  /* 路灯的光 */
+  .glow {
+    position: absolute; right: -10vw; top: -20vh; width: 90vw; height: 130vh;
+    background: radial-gradient(ellipse at 70% 22%, rgba(255, 217, 138, .42) 0, rgba(255, 217, 138, .16) 28%, rgba(255, 217, 138, 0) 58%);
+    transition: opacity 1.2s;
+  }
+  .lamp { position: absolute; right: 16vw; bottom: 15vh; width: 70px; height: 62vh; }
+  .lamp svg { width: 100%; height: 100%; display: block; }
+  .lamp .bulb { animation: flicker 5s ease-in-out infinite; }
+  @keyframes flicker { 0%,100% { opacity: 1;} 92% { opacity: 1;} 94% { opacity: .78;} 96% { opacity: 1;} }
+  /* ---- 天：夜里是 body 的深蓝，白天盖一层蓝天上去 ---- */
+  .daysky {
+    position: absolute; inset: 0; opacity: 0; transition: opacity 3.5s ease;
+    background: linear-gradient(180deg, #6fb8ea 0%, #a5d6f4 46%, #e4f3f7 72%, #fff3dd 100%);
+  }
+  .day .daysky { opacity: 1; }
+  .scene .stars { transition: opacity 2.5s, filter 1.2s; }
+  .day .scene .stars { opacity: 0; }
+  /* 月亮：上车以后慢慢沉下去 */
+  .moon {
+    position: absolute; left: 12vw; top: 9vh; width: 66px; height: 66px; border-radius: 50%;
+    background:
+      radial-gradient(circle at 34% 38%, rgba(200, 190, 160, .35) 0 9%, transparent 10%),
+      radial-gradient(circle at 62% 64%, rgba(200, 190, 160, .3) 0 6%, transparent 7%),
+      radial-gradient(circle at 66% 30%, rgba(200, 190, 160, .25) 0 4%, transparent 5%),
+      radial-gradient(circle at 40% 40%, #fffbea, #f3e8c4);
+    box-shadow: 0 0 40px 12px rgba(255, 246, 214, .18), 0 0 120px 40px rgba(180, 200, 255, .08);
+    transition: transform 4s cubic-bezier(.5,0,.6,1), opacity 3s;
+  }
+  .day .moon { transform: translateY(40vh); opacity: 0; }
+  /* 太阳：从山后面升上来 */
+  .sun {
+    position: absolute; right: 20vw; top: 8vh; width: 96px; height: 96px; border-radius: 50%;
+    background: radial-gradient(circle, #fffdf0 0 38%, #ffe9a6 62%, #ffd877 100%);
+    box-shadow: 0 0 60px 24px rgba(255, 230, 150, .55), 0 0 200px 90px rgba(255, 240, 190, .35);
+    transform: translateY(48vh); opacity: 0;
+    transition: transform 5s cubic-bezier(.2,.7,.3,1) .8s, opacity 2.5s .8s;
+  }
+  .day .sun { transform: none; opacity: 1; }
+  /* 白天的云，慢慢飘 */
+  .clouds { position: absolute; inset: 0; opacity: 0; transition: opacity 3s 1s; }
+  .day .clouds { opacity: 1; }
+  .cloud { position: absolute; left: 0; animation: cloudDrift linear infinite; }
+  .cloud svg { width: 100%; height: auto; display: block; }
+  @keyframes cloudDrift { from { transform: translateX(-30vw); } to { transform: translateX(115vw); } }
+
+  /* 远山、近坡 —— 颜色都用变量，白天换一套，fill 会自己慢慢过渡 */
+  .scene {
+    --m1: #1b2545; --m2: #141c34; --m3: #0e1427; --m3t: #0a0f1e;
+    --house: #1d2438; --roof: #2a2131; --win: #ffd98a;
+    --c-dark: #070b16; --c-mid: #0c1323; --c-lite: #1a2338; --trunk: #080c16;
+    --fog: rgba(130, 150, 200, .12);
+  }
+  .day .scene, .scene.day {
+    --m1: #a9c7e6; --m2: #94c57c; --m3: #6dac5a; --m3t: #4e9046;
+    --house: #f4ead2; --roof: #c0584d; --win: #8fb8d8;
+    --c-dark: #3c7a3c; --c-mid: #5b9a48; --c-lite: #8cc46a; --trunk: #6e4c35;
+    --fog: rgba(255, 255, 255, .4);
+  }
+  .hills { position: absolute; left: 0; right: 0; bottom: calc(17vh - 2px); height: 40vh; }
+  .hills svg { width: 100%; height: 100%; display: block; }
+  .hills path, .hills rect, .hills circle, .tree path, .tree ellipse, .tree circle { transition: fill 3.5s ease; }
+  .hills .m1 { fill: var(--m1); } .hills .m2 { fill: var(--m2); } .hills .m3 { fill: var(--m3); } .hills .m3t { fill: var(--m3t); }
+  .hills .house { fill: var(--house); } .hills .roof { fill: var(--roof); } .hills .win { fill: var(--win); }
+  .hills .win { filter: drop-shadow(0 0 4px rgba(255, 217, 138, .8)); transition: fill 3.5s, filter 3s; }
+  .day .hills .win { filter: none; }
+  .fog {
+    position: absolute; left: 0; right: 0; bottom: 17vh; height: 14vh; pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--fog) 70%, transparent);
+    transition: background 3.5s;
+  }
+
+  /* 大树：三层叶子，靠路灯那边亮一点 */
+  .tree { position: absolute; bottom: 12vh; width: 44vw; max-width: 540px; }
+  .tree svg { width: 100%; height: auto; display: block; }
+  .tree.left { left: -14vw; }
+  .tree.right { right: -16vw; transform: scaleX(-1); }
+  .tree .trunk { fill: var(--trunk); }
+  .tree .c-dark { fill: var(--c-dark); } .tree .c-mid { fill: var(--c-mid); } .tree .c-lite { fill: var(--c-lite); }
+  .tree .leafy { transform-box: fill-box; transform-origin: 50% 100%; animation: treeSway 7s ease-in-out infinite; }
+  @keyframes treeSway { 0%,100% { transform: rotate(-.6deg); } 50% { transform: rotate(.6deg); } }
+
+  /* 路：人行道 → 路缘 → 柏油路 + 中间的虚线。颜色登记过，才能从夜里慢慢变成白天 */
+  @property --walk  { syntax: '<color>'; inherits: true; initial-value: #2f3447; }
+  @property --walk2 { syntax: '<color>'; inherits: true; initial-value: #272b3c; }
+  @property --seam  { syntax: '<color>'; inherits: true; initial-value: rgba(0,0,0,.25); }
+  @property --curb  { syntax: '<color>'; inherits: true; initial-value: #474d63; }
+  @property --asph  { syntax: '<color>'; inherits: true; initial-value: #191d2b; }
+  @property --asph2 { syntax: '<color>'; inherits: true; initial-value: #0e111b; }
+  @property --dash  { syntax: '<color>'; inherits: true; initial-value: rgba(235, 225, 190, .32); }
+  .road {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 17vh;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 58px, var(--seam) 58px 60px) top / 100% 18% no-repeat,
+      linear-gradient(180deg,
+        var(--walk) 0, var(--walk2) 18%,
+        var(--curb) 18%, var(--curb) 22%,
+        rgba(0,0,0,.35) 22%, var(--asph) 26%,
+        var(--asph) 27.2%, var(--dash) 27.2%, var(--dash) 28.4%, var(--asph) 28.4%,
+        var(--asph2) 100%);
+    transition: --walk 3.5s, --walk2 3.5s, --seam 3.5s, --curb 3.5s, --asph 3.5s, --asph2 3.5s, --dash 3.5s;
+  }
+  .day .road {
+    --walk: #e3d6bb; --walk2: #d3c4a5; --seam: rgba(120, 100, 70, .18); --curb: #f4eee0;
+    --asph: #8d9099; --asph2: #767a84; --dash: rgba(255, 252, 240, .9);
+  }
+  /* 路灯照在人行道边上的那道暖光 */
+  .road::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+    background: linear-gradient(90deg, rgba(255,217,138,0) 0, rgba(255,217,138,.35) 60%, rgba(255,217,138,.6) 82%, rgba(255,217,138,.1) 100%);
+  }
+  /* 中间的虚线 */
+  .road::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 63%; height: 5px;
+    background: repeating-linear-gradient(90deg, var(--dash) 0 74px, transparent 74px 148px);
+  }
+  .day .road::before, .day .puddle { opacity: 0; }
+  .puddle {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 217, 138, .22) 0, rgba(140, 170, 220, .10) 55%, rgba(0,0,0,0) 75%);
+    filter: blur(1px);
+  }
+  .puddle.p1 { left: 8%; bottom: 3vh; width: 240px; height: 34px; }
+  .puddle.p2 { left: 58%; bottom: 8vh; width: 320px; height: 30px; }
+  .puddle.p3 { left: 40%; bottom: 1vh; width: 180px; height: 26px; }
+  /* 白天路灯熄掉 */
+  .glow, .lamp .bulb { transition: opacity 2s; }
+  .day .glow { opacity: 0; }
+  .day .lamp .bulb { animation: none; opacity: .15; }
+  .lamp rect, .lamp path { transition: fill 3.5s, stroke 3.5s; }
+  .day .lamp rect { fill: #5d6472; }
+  .day .lamp path[fill="none"] { stroke: #5d6472; }
+  .day .lamp path:not([fill="none"]) { fill: #6b7280; }
+  .day .fireflies { opacity: 0 !important; }
+  /* 天一亮，小煤球就一个个缩起来躲掉 */
+  .day .dust { opacity: 0; scale: .1; transition: translate .35s, opacity .7s ease var(--hide, 0s), scale .7s cubic-bezier(.5,0,.8,.3) var(--hide, 0s); }
+  /* 远远地，巴士载着他们从天上跑过去 */
+  .farbus { position: absolute; top: 24vh; right: -150px; width: 130px; animation: farbus 24s linear 2.5s infinite both; }
+  .farbus svg { width: 100%; height: auto; display: block; animation: farBob .5s ease-in-out infinite alternate; }
+  .farbus .legs path { transform-box: fill-box; transform-origin: 50% 0; animation: run .32s ease-in-out infinite alternate; }
+  .farbus .legs path:nth-child(2n), .farbus .legs.back path:nth-child(2n+1) { animation-delay: -.16s; }
+  .farbus .legs.back path:nth-child(2n) { animation-delay: 0s; }
+  .farbus .beam { display: none; }
+  @keyframes farbus { 0% { transform: translate(0, 0); } 75% { transform: translate(calc(-100vw - 300px), -6vh); } 100% { transform: translate(calc(-100vw - 300px), -6vh); } }
+  @keyframes farBob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+  @media (max-width: 760px) {
+    .moon { left: 8vw; top: 6vh; width: 48px; height: 48px; }
+    .sun { right: 10vw; top: 5vh; width: 72px; height: 72px; }
+    .farbus { top: 16vh; width: 96px; }
+  }
+  /* 站牌 */
+  .busstop { align-self: end; width: 92px; height: 306px; }
+  .busstop svg { width: 100%; height: 100%; display: block; }
+
+  #sky { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+
+  /* ================= 舞台布局 ================= */
+  .stage {
+    position: relative; z-index: 1; height: 100%;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 440px);
+    align-items: end; justify-content: center;
+    column-gap: 22px;
+    padding: 24px 16px calc(17vh - 6px);
+    box-sizing: border-box;
+  }
+  .totoro-wrap { align-self: end; width: clamp(262px, 33vw, 420px); position: relative; }
+  .totoro-wrap .littles { position: absolute; right: -4%; bottom: -2px; width: 40%; }
+  .totoro-wrap .littles svg { width: 100%; height: auto; display: block; }
+  .cards { align-self: end; margin-bottom: 26px; min-width: 0; transition: margin-bottom .9s cubic-bezier(.3,.9,.3,1); }
+  .won .cards { margin-bottom: 104px; }
+
+  @media (max-width: 760px) {
+    .stage { grid-template-columns: 1fr; row-gap: 0; padding-bottom: 12vh; align-content: end; }
+    .busstop { display: none; }
+    .totoro-wrap { justify-self: center; width: min(64vw, 256px); margin-bottom: -18px; }
+    .cards { margin-bottom: 0; }
+    .won .cards { margin-bottom: 0; }
+    .won.stage { padding-bottom: 24vh; }
+    .nightbus { bottom: 0.5vh; }
+    .lamp { right: 4vw; }
+
+  }
+  @media (max-height: 640px) and (min-width: 761px) {
+    .totoro-wrap { width: clamp(200px, 24vw, 280px); }
+  }
+
+  /* ================= 龙猫 ================= */
+  .totoro { width: 100%; height: auto; display: block; animation: breathe 3.4s ease-in-out infinite; transform-origin: 50% 100%; }
+  @keyframes breathe { 0%,100% { transform: scaleY(1);} 50% { transform: scaleY(1.015) scaleX(1.005);} }
+  .totoro .brolly { transform-box: fill-box; transform-origin: 20% 100%; animation: sway 3.6s ease-in-out infinite; }
+  @keyframes sway { 0%,100% { transform: rotate(-2deg);} 50% { transform: rotate(2deg);} }
+  .totoro .drop { transform-box: fill-box; transform-origin: 50% 100%; animation: drip 1.5s linear infinite; }
+  @keyframes drip {
+    0% { transform: translateY(-46px); opacity: 0; }
+    18% { opacity: .95; }
+    62% { transform: translateY(0); opacity: .95; }
+    72% { transform: translateY(0) scale(1.8, .45); opacity: .55; }
+    100% { transform: translateY(0) scale(2.6, .15); opacity: 0; }
+  }
+  .mood-sad .totoro .brolly { animation: droop .3s linear infinite; }
+  @keyframes droop { 0%,100% { transform: rotate(-11deg);} 50% { transform: rotate(-8deg);} }
+  .totoro .eye-heart { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.4); transition: all .35s cubic-bezier(.2,1.4,.4,1); }
+  .totoro .eye-dot, .totoro .mouth-calm, .totoro .mouth-sad, .totoro .mouth-grin, .totoro .tear { transition: opacity .25s; }
+  .totoro .mouth-sad, .totoro .mouth-grin, .totoro .tear { opacity: 0; }
+  .mood-sad .totoro .mouth-calm { opacity: 0; }
+  .mood-sad .totoro .mouth-sad, .mood-sad .totoro .tear { opacity: 1; }
+  .mood-sad .totoro { animation: shiver .3s linear infinite; }
+  @keyframes shiver { 0%,100% { transform: translateX(0);} 25% { transform: translateX(-3px) rotate(-1deg);} 75% { transform: translateX(3px) rotate(1deg);} }
+  .mood-love .totoro .eye-dot { opacity: 0; }
+  .mood-love .totoro .eye-heart { opacity: 1; transform: scale(1); }
+  .mood-love .totoro .mouth-calm { opacity: 0; }
+  .mood-love .totoro .mouth-grin { opacity: 1; }
+  .mood-love .totoro { animation: hop .7s cubic-bezier(.2,1.6,.4,1) infinite alternate; }
+  @keyframes hop { from { transform: translateY(0);} to { transform: translateY(-16px) scaleX(1.02);} }
+  .mood-love .littles { animation: hop .6s cubic-bezier(.2,1.6,.4,1) infinite alternate; animation-delay: .15s; }
+  /* 告白卡出来的时候，龙猫跳一下、把伞举一举，打个招呼 */
+  .greet .totoro { animation: greetHop .75s cubic-bezier(.2,1.5,.4,1) 2; }
+  @keyframes greetHop { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-14px) scaleY(1.03); } 70% { transform: translateY(0) scale(1.03, .97); } }
+  .greet .totoro .brolly { animation: brollyWave .5s ease-in-out 3; }
+  @keyframes brollyWave { 0%,100% { transform: rotate(-2deg);} 50% { transform: rotate(9deg);} }
+  /* 上车：龙猫们缩小、往巴士那边溜过去 */
+  .totoro-wrap { transition: opacity .9s ease, transform 1.1s cubic-bezier(.5,0,.7,.4); }
+  .boarded .totoro-wrap { opacity: 0; transform: translateX(34vw) scale(.35); }
+
+  /* ===== 换成图片的时候，让它和画的那个占一样的位置 ===== */
+  .friend img {
+    width: 100%; height: auto; display: block; object-fit: contain;
+  }
+  .friend {
+    position: absolute; right: 7%; bottom: 1.4vh; width: clamp(150px, 20vw, 260px); pointer-events: none;
+    opacity: 1; transition: opacity 1.1s ease 1.3s, transform 1.4s ease 1.3s;
+  }
+  .friend img { animation: friendHover 2.8s ease-in-out infinite; }
+  @keyframes friendHover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  /* 她答应之后，巴士正好开过来，它就先上车了 */
+  .won .friend { opacity: 0; transform: translateX(38px); }
+  @media (max-width: 760px) { .friend { right: 5%; bottom: 1vh; width: 148px; } }
+  .cinema .filmbg {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    pointer-events: none;
+  }
+  /* 前面压一层夜色：中间留一点，四周和底下收到近乎全黑，影片才跳得出来 */
+  .cinema .filmbg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 84% 68% at 50% 40%, rgba(12, 20, 36, .12) 0%, rgba(12, 20, 36, .42) 64%, rgba(12, 20, 36, .70) 100%),
+      linear-gradient(180deg, rgba(12, 20, 36, .32) 0%, rgba(12, 20, 36, .26) 44%, rgba(12, 20, 36, .58) 78%, rgba(12, 20, 36, .82) 100%);
+  }
+  .cinema .couple {
+    position: absolute; z-index: 2; left: 2.5%; bottom: calc(4px + env(safe-area-inset-bottom, 0px));
+    width: clamp(190px, 27vw, 380px); pointer-events: none;
+    animation: coupleIn 1.1s cubic-bezier(.2, 1.1, .4, 1) .5s both;
+  }
+  .cinema .couple img { width: 100%; height: auto; display: block; }
+  @keyframes coupleIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 760px) { .cinema .couple { width: 56vw; left: 1.5%; } }
+
+  /* ============ 小火灵：跟城堡同一部片子，所以放在影片那屏 ============ */
+  .cinema .ember {
+    position: absolute; z-index: 1; right: 5%; top: 21%;
+    width: clamp(58px, 7.5vw, 104px); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    animation: emFloat 3.6s ease-in-out infinite;
+  }
+  /* 点它一下，火苗就窜起来 */
+  .cinema .ember.flare img { animation: emFlare .7s ease-out; }
+  @keyframes emFlare {
+    0%, 100% { transform: scale(1); filter: none; }
+    35% { transform: scale(1.34) rotate(-4deg); filter: brightness(1.25) drop-shadow(0 0 18px rgba(255, 170, 60, .9)); }
+  }
+  .cinema .ember img { width: 100%; height: auto; display: block; }
+  @keyframes emFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @media (max-width: 760px) { .cinema .ember { right: 4%; top: 17%; width: 62px; } }
+
+  /* ================= 龙猫巴士 ================= */
+  .nightbus {
+    position: fixed; z-index: 1; bottom: 1.5vh; right: 0;
+    width: min(500px, 96vw); transform: translateX(110%); pointer-events: none;
+    transition: transform 3.2s cubic-bezier(.3,.8,.3,1);
+  }
+  .nightbus.arrive { transform: translateX(-8%); }
+  .nightbus.ready { pointer-events: auto; cursor: pointer; }
+  .nightbus.depart { transform: translateX(calc(-100vw - 110%)); transition: transform 4.6s cubic-bezier(.55,0,.6,1); }
+  .nightbus svg { width: 100%; height: auto; display: block; }
+  .nightbus .legs path { transform-box: fill-box; transform-origin: 50% 0; }
+  .nightbus.arrive .legs path { animation: run .32s ease-in-out infinite alternate; }
+  .nightbus.arrive .legs path:nth-child(2n), .nightbus.arrive .legs.back path:nth-child(2n+1) { animation-delay: -.16s; }
+  .nightbus.arrive .legs.back path:nth-child(2n) { animation-delay: 0s; }
+  @keyframes run { from { transform: rotate(-14deg);} to { transform: rotate(14deg);} }
+  .nightbus .beam { opacity: 0; transition: opacity 1s 1.4s; }
+  .nightbus.arrive .beam { opacity: 1; }
+  .nightbus .eye { animation: eyeglow 1.6s ease-in-out infinite; }
+  @keyframes eyeglow { 0%,100% { opacity: .85;} 50% { opacity: 1;} }
+
+  /* ================= 卡片 ================= */
+  .card {
+    position: relative;
+    width: 100%;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath fill='%23f7b8ca' fill-opacity='.28' d='M14 19c-2-4-8-3-8 1 0 3 4 6 8 9 4-3 8-6 8-9 0-4-6-5-8-1zM42 47c-1.5-3-6-2.3-6 .8 0 2.2 3 4.5 6 6.7 3-2.2 6-4.5 6-6.7 0-3.1-4.5-3.8-6-.8z'/%3E%3C/svg%3E"),
+      linear-gradient(170deg, var(--paper) 0%, var(--paper-2) 100%);
+    border-radius: 22px;
+    padding: 32px 28px 26px;
+    box-sizing: border-box;
+    text-align: center;
+    box-shadow: var(--shadow), 0 0 46px var(--pink-glow), inset 0 0 0 1px var(--paper-edge), inset 0 0 0 7px rgba(255,255,255,.55), inset 0 0 0 8px var(--pink-soft);
+    animation: pop .7s cubic-bezier(.2,1.2,.4,1) both;
+  }
+  .card::before {
+    content: ""; position: absolute; top: -12px; left: 50%; width: 92px; height: 26px;
+    transform: translateX(-50%) rotate(-3deg);
+    background: repeating-linear-gradient(45deg, rgba(240, 140, 170, .55) 0 6px, rgba(255, 228, 236, .7) 6px 12px);
+    border-radius: 3px; box-shadow: 0 2px 6px rgba(201, 74, 114, .15);
+  }
+  /* 角落里的两颗小爱心 */
+  .card::after {
+    content: "♡"; position: absolute; left: 18px; top: 14px;
+    color: var(--red); opacity: .55; font-size: 18px; transform: rotate(-14deg);
+  }
+  .card#win::after { content: "♥"; opacity: .7; }
+  @keyframes pop { from { transform: translateY(18px) scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  .eyebrow {
+    display: inline-block; font-size: 12px; letter-spacing: .32em; color: var(--red-deep);
+    background: rgba(255, 255, 255, .7); border: 1px solid var(--paper-edge); border-radius: 999px;
+    padding: 6px 12px 5px 16px; margin-bottom: 14px;
+  }
+  .eyebrow::before, .eyebrow::after { content: "♥"; color: var(--red); font-size: 10px; letter-spacing: 0; }
+  .eyebrow::before { margin-right: 8px; }
+  .eyebrow::after { margin-left: 6px; }
+  h1 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(30px, 7.6vw, 40px); line-height: 1.3; margin: 0 0 8px;
+    text-wrap: balance; letter-spacing: .04em;
+  }
+  h1 em { font-style: normal; color: var(--red-deep); background: linear-gradient(transparent 62%, var(--pink-soft) 62%, var(--pink-soft) 92%, transparent 92%); padding: 0 .08em; }
+  .sub { margin: 0 0 22px; color: var(--ink-soft); font-size: 15px; line-height: 1.85; min-height: 3.7em; }
+  .sub.typing::after {
+    content: ""; display: inline-block; width: 1px; height: 1em; margin-left: 3px; vertical-align: -.15em;
+    background: var(--ink-soft); animation: caret .9s steps(1) infinite;
+  }
+  @keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  .buttons {
+    position: relative; display: flex; justify-content: center; align-items: center;
+    gap: 16px; flex-wrap: wrap; min-height: 110px;
+  }
+  .btn {
+    font-family: var(--display); font-size: 24px; letter-spacing: .1em;
+    border: none; border-radius: 14px; padding: 12px 34px; cursor: pointer;
+    transition: transform .25s cubic-bezier(.2,1.4,.4,1), box-shadow .25s, background .25s;
+    user-select: none;
+  }
+  .btn:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+  .yes {
+    background: linear-gradient(180deg, #f08aa8 0%, var(--red) 55%, var(--red-deep) 100%); color: #fff;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px rgba(226, 103, 138, .45), inset 0 -3px 0 rgba(0,0,0,.1), inset 0 2px 0 rgba(255,255,255,.35);
+    transform: scale(var(--grow, 1)); transform-origin: center; z-index: 2;
+  }
+  .yes:hover { filter: brightness(1.05); box-shadow: 0 12px 30px rgba(226, 103, 138, .6), inset 0 -3px 0 rgba(0,0,0,.1), inset 0 2px 0 rgba(255,255,255,.35); }
+  #yes, #start { animation: beat 1.6s ease-in-out infinite; }
+  @keyframes beat { 0%, 40%, 100% { scale: 1; } 12% { scale: 1.06; } 24% { scale: 1.02; } 32% { scale: 1.07; } }
+  .no {
+    background: #fff; color: var(--ink-soft); border: 1.5px solid var(--paper-edge); border-radius: 999px;
+    padding: 11px 30px; z-index: 1;
+    transition: transform .25s cubic-bezier(.2,1.4,.4,1), left .3s cubic-bezier(.2,1.4,.4,1), top .3s cubic-bezier(.2,1.4,.4,1);
+  }
+  .no.fleeing { position: fixed; z-index: 3; }
+  .no.giveup { background: linear-gradient(180deg, #f08aa8 0%, var(--red) 55%, var(--red-deep) 100%); color: #fff; border-color: transparent; box-shadow: 0 10px 24px rgba(226, 103, 138, .45); }
+  .footer { margin-top: 18px; font-size: 12px; color: var(--ink-soft); letter-spacing: .12em; }
+
+  .intro .sub { min-height: 0; }
+  .intro .from { font-family: var(--display); font-size: 20px; color: var(--ink); margin: 0 0 20px; letter-spacing: .08em; }
+  .intro .btn { font-size: 26px; padding: 14px 46px; }
+  .intro .credits { margin: 14px 0 0; font-size: 11px; color: var(--ink-soft); letter-spacing: .2em; opacity: .8; word-break: keep-all; }
+  .intro .tiny[hidden] { display: none; }
+  .intro .tiny { margin-top: 12px; font-size: 12px; color: var(--ink-soft); display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .intro .tiny button { font: inherit; color: var(--ink-soft); background: none; border: none; text-decoration: underline dotted; text-underline-offset: 3px; cursor: pointer; padding: 0; }
+  .intro .tiny button:hover { color: var(--red); }
+  .intro .count { color: var(--red); }
+  .seal {
+    position: absolute; top: 14px; right: 16px; width: 46px; height: 46px; border-radius: 6px;
+    border: 2px solid var(--red); color: var(--red); font-family: var(--display); font-size: 15px; line-height: 1.05;
+    display: grid; place-items: center; transform: rotate(8deg); opacity: .9;
+    border-radius: 50%; background: rgba(255, 255, 255, .6); box-shadow: 0 0 0 3px rgba(255,255,255,.6), 0 0 0 4px var(--pink-soft);
+  }
+  .piece { position: absolute; width: 38px; height: 38px; opacity: .9; pointer-events: none; }
+  .piece.p1 { left: -14px; bottom: 40px; transform: rotate(-18deg); }
+  .piece.p2 { right: -12px; top: 70px; transform: rotate(22deg); }
+
+  .stamp {
+    display: inline-block; margin-top: 12px; font-family: var(--display); font-size: 20px; color: var(--red);
+    border: 2px dashed var(--red); border-radius: 14px; padding: 8px 20px; transform: rotate(-3deg);
+    background: rgba(255, 255, 255, .75); letter-spacing: .1em; box-shadow: 0 6px 16px rgba(226, 103, 138, .2);
+  }
+  .stamp small { display: block; font-family: var(--body); font-size: 12px; color: var(--ink-soft); letter-spacing: .14em; margin-top: 4px; }
+  .board {
+    display: block; margin: 18px auto 0; font-size: 20px; padding: 10px 30px;
+    animation: pop .6s cubic-bezier(.2,1.2,.4,1) both;
+  }
+  .board[hidden], .again[hidden] { display: none; }
+  .again {
+    display: block; margin: 14px auto 0; font: inherit; font-size: 12px; color: var(--ink-soft);
+    background: none; border: none; text-decoration: underline dotted; text-underline-offset: 3px; cursor: pointer;
+  }
+  .again:hover { color: var(--red); }
+
+  /* ================= 背景音乐 ================= */
+  .music {
+    position: fixed; z-index: 6; top: calc(10px + env(safe-area-inset-top, 0px)); left: 10px;
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--display); font-size: 17px; line-height: 1; color: var(--paper); cursor: pointer;
+    background: rgba(255, 249, 232, .10); border: 1px solid rgba(255, 249, 232, .35);
+    -webkit-tap-highlight-color: transparent; transition: background .25s, opacity .25s;
+  }
+  .music[hidden] { display: none; }
+  .music:hover { background: rgba(255, 249, 232, .2); }
+  .music.off { opacity: .55; }
+  .music.off::after {
+    content: ""; position: absolute; left: 7px; right: 7px; top: 50%; height: 1px;
+    background: currentColor; transform: rotate(-38deg);
+  }
+
+  /* ================= 影院 ================= */
+  .cinema {
+    position: fixed; inset: 0; height: 100dvh; z-index: 4;
+    background: radial-gradient(ellipse at 50% 110%, #2b4468 0, #14233a 60%);
+    display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box; gap: 12px; animation: fade .6s ease both; overflow: hidden;
+  }
+  .cinema .stars { position: absolute; inset: 0; pointer-events: none; }
+  .cinema .stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; animation: twinkle 3s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+  /* reverse：从右边飘进来，往左边飘出去 */
+  .cinema .flyer { position: absolute; top: 9%; left: -190px; width: clamp(104px, 13vw, 170px); pointer-events: none; opacity: .95; animation: fly 46s linear infinite reverse; animation-delay: 1.5s; }
+  .cinema .flyer img { width: 100%; height: auto; display: block; animation: floaty 3.4s ease-in-out infinite; }
+  @keyframes floaty { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-10px);} }
+  @keyframes fly { from { transform: translateX(0);} to { transform: translateX(calc(100vw + 300px));} }
+  .cinema .torii { position: absolute; left: 1%; bottom: 14vh; width: min(36vw, 360px); opacity: .55; pointer-events: none; }
+  .cinema .torii svg { width: 100%; height: auto; display: block; }
+  .cinema .lantern {
+    position: absolute; width: 13px; height: 17px; pointer-events: none;
+    border-radius: 50% 50% 46% 46%;
+    background: radial-gradient(circle at 50% 38%, #fff2c8 0, #ffb84d 62%, #de7f38 100%);
+    box-shadow: 0 0 16px 6px rgba(255, 200, 120, .28);
+    animation: lanternRise linear infinite;
+  }
+  @keyframes lanternRise {
+    0% { transform: translate(0, 0) scale(.9); opacity: 0; }
+    12% { opacity: .9; }
+    88% { opacity: .75; }
+    100% { transform: translate(26px, -72vh) scale(1.05); opacity: 0; }
+  }
+  .cinema .soot { position: absolute; bottom: calc(52px + env(safe-area-inset-bottom, 0px)); width: 26px; height: 26px; pointer-events: none;
+    background: radial-gradient(circle, #111 0 46%, rgba(17,17,17,.55) 60%, rgba(17,17,17,0) 72%); border-radius: 50%; animation: sootHop 1.6s ease-in-out infinite; }
+  .cinema .soot::before, .cinema .soot::after { content: ""; position: absolute; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: inset -1.5px 0 0 #111; }
+  .cinema .soot::before { left: 6px; } .cinema .soot::after { right: 6px; }
+  @keyframes sootHop { 0%,100% { transform: translateY(0) scale(1);} 50% { transform: translateY(-10px) scale(1.06, .94);} }
+  .cinema .bar { position: relative; z-index: 1; padding-left: 34px; display: flex; justify-content: space-between; align-items: center; color: #d6e2f0; font-size: 13px; letter-spacing: .2em; }
+  .cinema .bar b { font-family: var(--display); font-weight: 400; font-size: 18px; letter-spacing: .12em; }
+  .cinema .skip { font: inherit; color: #d6e2f0; background: rgba(255,255,255,.08); border: 1px solid rgba(214,226,240,.4); border-radius: 999px; padding: 6px 14px; cursor: pointer; letter-spacing: .14em; }
+  .cinema .skip:hover { background: rgba(255,255,255,.16); }
+  .cinema .tools { display: flex; gap: 8px; }
+  .cinema .save { text-decoration: none; }
+  .cinema .screen { position: relative; min-height: 0; min-width: 0; overflow: hidden; }
+  .cinema video { position: absolute; inset: 10px; margin: auto; width: auto; height: auto;
+    max-width: calc(100% - 20px); max-height: calc(100% - 20px); object-fit: contain; border-radius: 10px; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 6px var(--paper); animation: pop .7s cubic-bezier(.2,1.2,.4,1) both; }
+  .cinema .tap {
+    position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; border: none; padding: 0;
+    background: rgba(10, 18, 32, .5); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .cinema .tap span {
+    font-family: var(--display); font-size: 22px; letter-spacing: .12em; color: var(--paper);
+    background: rgba(10, 18, 32, .55); border: 1px solid rgba(255, 249, 232, .45); border-radius: 999px; padding: 12px 26px;
+  }
+  .cinema .unmute {
+    position: absolute; z-index: 2; left: 50%; bottom: 18px; transform: translateX(-50%);
+    font-family: var(--display); font-size: 15px; letter-spacing: .1em; color: var(--paper);
+    background: rgba(10, 18, 32, .65); border: 1px solid rgba(255, 249, 232, .45); border-radius: 999px;
+    padding: 8px 18px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .cinema .tap[hidden], .cinema .unmute[hidden] { display: none; }
+  .cinema .nav {
+    position: absolute; z-index: 3; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; padding: 0 0 4px;
+    font-family: var(--display); font-size: 30px; line-height: 1; color: var(--paper);
+    background: rgba(10, 18, 32, .55); border: 1px solid rgba(255, 249, 232, .42);
+    cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .25s;
+  }
+  .cinema .nav:hover { background: rgba(10, 18, 32, .85); }
+  .cinema .nav.prev { left: 8px; }
+  .cinema .nav.next { right: 8px; }
+  .cinema .nav[hidden] { display: none; }
+  .dust {
+    position: absolute; display: block; pointer-events: none;
+    background-image: var(--dust); background-size: contain; background-repeat: no-repeat; background-position: center;
+    animation: sootHop 1.6s ease-in-out infinite;
+  }
+  .cinema .dots { position: relative; display: flex; justify-content: center; gap: 8px; }
+  .cinema .dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(214,226,240,.3); transition: background .3s, transform .3s; }
+  .cinema .dots i.on { background: var(--lamp); transform: scale(1.4); }
+  .cinema .dots i.done { background: #d6e2f0; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ================= 可以碰的小东西 ================= */
+  .totoro-wrap, .littles { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .boarded .totoro-wrap { pointer-events: none; }
+  .poke .totoro { animation: greetHop .55s cubic-bezier(.2,1.5,.4,1) 1; }
+  .totoro .pupils { transition: transform .18s ease-out; }
+  .totoro .gift { transform-box: fill-box; transform-origin: 50% 100%; }
+  .totoro .gift.shake { animation: giftShake .5s ease-in-out; }
+  @keyframes giftShake { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-12deg) scale(1.08); } 50% { transform: rotate(10deg) scale(1.08); } 80% { transform: rotate(-5deg); } }
+  .littles.jump svg { animation: littleJump .6s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes littleJump { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-16px) scale(1.04, .98); } 70% { transform: translateY(0) scale(1.05, .94); } }
+  /* 龙猫说的话 */
+  .bubble {
+    position: absolute; z-index: 3; left: 70%; bottom: 60%; width: max-content; max-width: 190px;
+    padding: 8px 14px 7px; border-radius: 16px 16px 16px 4px; box-sizing: border-box;
+    background: var(--paper); color: var(--ink);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .35), inset 0 0 0 1px var(--paper-edge);
+    font-family: var(--display); font-size: 18px; letter-spacing: .06em; line-height: 1.35;
+    pointer-events: none; opacity: 0; transform: translateY(8px) scale(.9); transform-origin: 0 100%;
+    transition: opacity .2s, transform .3s cubic-bezier(.2,1.4,.4,1);
+  }
+  .bubble.show { opacity: 1; transform: none; }
+  @media (max-width: 760px) {
+    .bubble { left: auto; right: -14%; max-width: 150px; font-size: 16px; border-radius: 16px 16px 4px 16px; transform-origin: 100% 100%; }
+  }
+  /* 小煤球：指头一靠近就躲开 */
+  .dust { transition: translate .35s cubic-bezier(.2,1.4,.4,1); }
+  .friend.boing { animation: boing .6s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes boing { 0%,100% { transform: translateY(0); } 35% { transform: translateY(-18px) scale(1.03, .98); } 70% { transform: translateY(0) scale(1.04, .95); } }
+  /* 路灯：点一下关灯，萤火虫就出来了 */
+  .lamp .bulb, .scene .stars, .puddle, .road::before { transition: opacity 1s, filter 1.2s; }
+  .lamp-off .glow { opacity: 0; }
+  .lamp-off .lamp .bulb { animation: none; opacity: .12; }
+  .lamp-off .scene .stars { filter: brightness(1.8); }
+  .lamp-off .puddle, .lamp-off .road::before { opacity: .35; }
+  .fireflies { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s; }
+  .lamp-off .fireflies { opacity: 1; }
+  .firefly {
+    position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #f4ffb0;
+    box-shadow: 0 0 10px 4px rgba(214, 255, 120, .45);
+    animation: ffDrift var(--d) ease-in-out infinite alternate, ffBlink var(--b) ease-in-out infinite;
+    animation-play-state: paused;
+  }
+  .lamp-off .firefly { animation-play-state: running; }
+  @keyframes ffDrift { from { transform: translate(0, 0); } to { transform: translate(var(--x), var(--y)); } }
+  @keyframes ffBlink { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+
+  /* ================= 开场的信封：她碰一下，音乐就响了 ================= */
+  .cover {
+    position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; cursor: pointer;
+    background: radial-gradient(ellipse at 50% 40%, rgba(60, 40, 80, .55), rgba(8, 12, 26, .92) 70%), #0d1426;
+    -webkit-tap-highlight-color: transparent; transition: opacity .9s ease, visibility 0s .9s;
+  }
+  .cover.open { opacity: 0; visibility: hidden; pointer-events: none; }
+  .cover .env {
+    position: relative; width: min(300px, 78vw); aspect-ratio: 3 / 2; border-radius: 10px;
+    background: linear-gradient(170deg, var(--paper), var(--paper-2));
+    box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 60px var(--pink-glow), inset 0 0 0 1px var(--paper-edge);
+    animation: envFloat 3.2s ease-in-out infinite;
+  }
+  @keyframes envFloat { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+  /* 信封盖子 */
+  .cover .env::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 58%;
+    background: linear-gradient(180deg, #ffdbe5, #f9c4d3);
+    clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 10px 10px 0 0;
+    filter: drop-shadow(0 2px 2px rgba(201, 74, 114, .25));
+    transform-origin: 50% 0; transition: transform .7s cubic-bezier(.5,0,.3,1);
+  }
+  .cover.open .env::before { transform: rotateX(180deg); }
+  .cover .seal-heart {
+    position: absolute; left: 50%; top: 58%; width: 46px; height: 46px; translate: -50% -50%;
+    border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 20px;
+    background: radial-gradient(circle at 35% 35%, #f08aa8, var(--red-deep));
+    box-shadow: 0 4px 10px rgba(201, 74, 114, .45), inset 0 0 0 3px rgba(255,255,255,.25);
+    animation: beat 1.6s ease-in-out infinite;
+  }
+  .cover .to {
+    position: absolute; left: 0; right: 0; bottom: 12%; text-align: center;
+    font-family: var(--display); font-size: 22px; color: var(--ink); letter-spacing: .12em;
+  }
+  .cover .hint {
+    position: absolute; left: 0; right: 0; top: calc(50% + min(100px, 26vw) + 34px); text-align: center;
+    color: #f6dce5; font-size: 14px; letter-spacing: .3em; animation: hintBlink 2s ease-in-out infinite;
+  }
+  @keyframes hintBlink { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+
+  .leaving { animation: fadeout .4s ease both !important; }
+  /* 影片放完：画面像老动画那样收成一个圆点 */
+  .cinema.leaving { animation: iris .58s cubic-bezier(.55, 0, .75, .2) both !important; }
+  @keyframes iris {
+    from { clip-path: circle(150% at 50% 46%); }
+    to { clip-path: circle(0% at 50% 46%); }
+  }
+  @keyframes fadeout { to { opacity: 0; transform: translateY(10px); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .totoro, .totoro .leaf, .card, .cinema, .cinema video, .cinema .flyer, .cinema .flyer img, .cinema .soot,
+    .greet .totoro, .greet .totoro .brolly, .cinema .ember, .cinema .ember.flare img,
+    .poke .totoro, .totoro .gift.shake, .littles.jump svg, .friend.boing, .firefly,
+    .friend img, .cinema .lantern, .cinema .couple,
+    .cinema .stars i, .dust, .lamp .bulb, .nightbus .eye, .nightbus.arrive .legs path, .mood-sad .totoro, .mood-love .totoro, .mood-love .littles { animation: none !important; }
+    .btn, .no, .nightbus, .nightbus.depart, .totoro-wrap { transition: none; }
+    #yes, #start { animation: none; }
+    .cinema .flyer { left: 40%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 开场信封：浏览器规定，要她先碰一下屏幕才能放音乐，所以让这一下变成"拆信" -->
+<div class="cover" id="cover" role="button" tabindex="0" aria-label="轻触打开">
+  <div class="env"><div class="seal-heart">♥</div><div class="to" id="coverTo">给 靖尹</div></div>
+  <div class="hint">轻触打开 ♪</div>
+</div>
+
+<!-- ============ 场景 ============ -->
+<div class="scene" aria-hidden="true">
+  <div class="daysky"></div>
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+  <div class="sun"></div>
+  <div class="clouds" id="clouds"></div>
+  <div class="glow" id="glow"></div>
+  <div class="hills"><svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice">
+    <path class="m1" d="M0 230 C120 170 220 150 320 190 C400 140 470 90 560 130 C640 165 700 175 780 150 C880 110 960 80 1060 130 C1140 170 1220 160 1300 140 C1360 125 1400 140 1440 150 L1440 400 L0 400 Z"/>
+    <path class="m2" d="M0 300 C150 250 300 240 450 270 C600 300 720 260 860 230 C980 205 1100 220 1220 250 C1320 275 1390 265 1440 255 L1440 400 L0 400 Z"/>
+    <!-- 坡上的小房子，夜里窗户亮着 -->
+    <rect class="house" x="958" y="196" width="40" height="22"/>
+    <path class="roof" d="M950 198 L978 180 L1006 198 Z"/>
+    <rect class="win" x="965" y="203" width="9" height="7"/><rect class="win" x="982" y="203" width="9" height="7"/>
+    <path class="m3" d="M0 350 C200 320 380 330 560 345 C740 360 900 330 1080 320 C1240 312 1360 330 1440 340 L1440 400 L0 400 Z"/>
+    <g class="m3t">
+      <circle cx="300" cy="322" r="16"/><circle cx="320" cy="328" r="11"/><circle cx="284" cy="330" r="10"/>
+      <circle cx="1180" cy="308" r="18"/><circle cx="1204" cy="316" r="12"/><circle cx="1160" cy="316" r="11"/>
+      <circle cx="720" cy="350" r="10"/><circle cx="736" cy="354" r="7"/>
+    </g>
+  </svg></div>
+  <div class="fog"></div>
+  <div class="tree left"><svg viewBox="0 0 540 640"><g class="leafy">
+    <path class="trunk" d="M250 640 C254 560 246 500 222 452 C206 420 182 404 160 392 L170 380 C196 392 222 410 240 436 C246 400 236 372 220 344 L234 338 C254 370 262 404 260 446 C272 416 296 392 330 376 L338 390 C306 408 286 436 280 476 C276 520 280 580 288 640 Z"/>
+    <g class="c-dark">
+      <ellipse cx="270" cy="310" rx="240" ry="150"/><ellipse cx="150" cy="390" rx="140" ry="96"/><ellipse cx="390" cy="400" rx="150" ry="98"/>
+      <ellipse cx="250" cy="180" rx="180" ry="118"/><ellipse cx="120" cy="250" rx="110" ry="84"/><ellipse cx="410" cy="240" rx="124" ry="92"/>
+    </g>
+    <g class="c-mid">
+      <ellipse cx="290" cy="280" rx="200" ry="118"/><ellipse cx="180" cy="356" rx="110" ry="70"/><ellipse cx="400" cy="362" rx="118" ry="72"/>
+      <ellipse cx="270" cy="160" rx="148" ry="92"/><ellipse cx="150" cy="226" rx="86" ry="62"/><ellipse cx="420" cy="214" rx="96" ry="70"/>
+    </g>
+    <g class="c-lite">
+      <ellipse cx="330" cy="236" rx="120" ry="66"/><ellipse cx="300" cy="128" rx="96" ry="54"/><ellipse cx="440" cy="190" rx="62" ry="40"/>
+      <ellipse cx="432" cy="330" rx="74" ry="38"/><ellipse cx="200" cy="200" rx="54" ry="32"/>
+    </g>
+  </g></svg></div>
+  <div class="tree right"><svg viewBox="0 0 540 640"><g class="leafy">
+    <path class="trunk" d="M250 640 C254 560 246 500 222 452 C206 420 182 404 160 392 L170 380 C196 392 222 410 240 436 C246 400 236 372 220 344 L234 338 C254 370 262 404 260 446 C272 416 296 392 330 376 L338 390 C306 408 286 436 280 476 C276 520 280 580 288 640 Z"/>
+    <g class="c-dark">
+      <ellipse cx="270" cy="310" rx="240" ry="150"/><ellipse cx="150" cy="390" rx="140" ry="96"/><ellipse cx="390" cy="400" rx="150" ry="98"/>
+      <ellipse cx="250" cy="180" rx="180" ry="118"/><ellipse cx="120" cy="250" rx="110" ry="84"/><ellipse cx="410" cy="240" rx="124" ry="92"/>
+    </g>
+    <g class="c-mid">
+      <ellipse cx="290" cy="280" rx="200" ry="118"/><ellipse cx="180" cy="356" rx="110" ry="70"/><ellipse cx="400" cy="362" rx="118" ry="72"/>
+      <ellipse cx="270" cy="160" rx="148" ry="92"/><ellipse cx="150" cy="226" rx="86" ry="62"/><ellipse cx="420" cy="214" rx="96" ry="70"/>
+    </g>
+    <g class="c-lite">
+      <ellipse cx="330" cy="236" rx="120" ry="66"/><ellipse cx="300" cy="128" rx="96" ry="54"/><ellipse cx="440" cy="190" rx="62" ry="40"/>
+      <ellipse cx="432" cy="330" rx="74" ry="38"/><ellipse cx="200" cy="200" rx="54" ry="32"/>
+    </g>
+  </g></svg></div>
+  <div class="lamp"><svg viewBox="0 0 70 600">
+    <rect x="31" y="60" width="8" height="540" fill="#2b3040"/>
+    <path d="M35 60 L35 30 L20 30" stroke="#2b3040" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M2 30 L38 30 L30 52 L10 52 Z" fill="#3a4052"/>
+    <g class="bulb"><ellipse cx="20" cy="52" rx="12" ry="5" fill="#fff2c4"/><ellipse cx="20" cy="54" rx="22" ry="9" fill="#ffd98a" opacity=".35"/></g>
+  </svg></div>
+  <div class="road"></div>
+  <div class="puddle p1"></div><div class="puddle p2"></div><div class="puddle p3"></div>
+  <div class="fireflies" id="fireflies"></div>
+
+</div>
+
+<!-- 龙猫巴士（答应后开过来） -->
+<!-- 夜行巴士：一只很长的夜蛾，背上驮着一车灯 -->
+<div class="nightbus" id="nightbus" aria-hidden="true">
+  <!-- 猫巴士：一只咧嘴大笑的虎斑大猫，肚子是车厢，十二条腿，头顶是目的地牌，背上两只老鼠当车灯 -->
+  <svg viewBox="0 0 600 260">
+    <defs>
+      <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd98a" stop-opacity=".0"/><stop offset="1" stop-color="#ffd98a" stop-opacity=".5"/></linearGradient>
+      <radialGradient id="eyeg"><stop offset="0" stop-color="#fffbe0"/><stop offset=".5" stop-color="#ffe45c"/><stop offset="1" stop-color="#f5b81f"/></radialGradient>
+      <linearGradient id="cbFur" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#eeae55"/><stop offset=".55" stop-color="#dc9440"/><stop offset="1" stop-color="#c47a2c"/>
+      </linearGradient>
+      <radialGradient id="nbWarm"><stop offset="0" stop-color="#ffd98a" stop-opacity=".45"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+    </defs>
+    <path class="beam" d="M60 100 L-300 30 L-300 214 L60 128 Z" fill="url(#beam)"/>
+    <ellipse cx="310" cy="246" rx="250" ry="11" fill="#05070c" opacity=".35"/>
+    <!-- 竖起来的大尾巴，一圈一圈的花纹 -->
+    <path d="M556 132 C 596 120, 600 70, 578 28" stroke="#d98f3c" stroke-width="28" fill="none" stroke-linecap="round"/>
+    <path d="M556 132 C 596 120, 600 70, 578 28" stroke="#93531f" stroke-width="28" fill="none" stroke-dasharray="9 17" opacity=".75"/>
+    <!-- 另一边的六条腿（颜色深一点） -->
+    <g class="legs back" fill="#a9682a"><path d="M182 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M257 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M332 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M407 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M482 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M552 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/></g>
+    <!-- 身子 + 大头 -->
+    <rect x="120" y="60" width="458" height="146" rx="62" fill="url(#cbFur)"/>
+    <ellipse cx="128" cy="128" rx="106" ry="94" fill="url(#cbFur)"/>
+    <!-- 毛茸茸的边 -->
+    <g fill="#dc9440">
+      <path d="M26 118 l-16 6 l14 6 l-14 10 l16 2 l-10 13 l18 -3 Z"/>
+      <path d="M240 60 l8 -12 l6 12 l8 -10 l5 12 l8 -9 l4 11 Z"/>
+      <path d="M440 60 l8 -11 l6 11 l8 -10 l5 11 l8 -8 l4 10 Z"/>
+    </g>
+    <!-- 奶油色的肚子和嘴边 -->
+    <path d="M150 190 C 260 216, 470 216, 566 184 C 558 200, 542 208, 520 208 H 160 C 150 204, 148 198, 150 190 Z" fill="#f5e3bd"/>
+    <ellipse cx="124" cy="166" rx="96" ry="44" fill="#f5e3bd"/>
+    <!-- 虎斑花纹 -->
+    <g stroke="#93531f" stroke-width="7" fill="none" stroke-linecap="round" opacity=".7">
+      <path d="M268 66 q6 12 0 22"/><path d="M328 64 q6 12 0 22"/><path d="M388 64 q6 12 0 22"/><path d="M448 66 q6 12 0 22"/><path d="M508 68 q6 12 0 20"/>
+      <path d="M298 164 q5 10 0 18"/><path d="M358 164 q5 10 0 18"/><path d="M418 164 q5 10 0 18"/><path d="M478 164 q5 10 0 18"/>
+      <path d="M122 62 q-4 10 2 18"/><path d="M142 60 q-3 10 3 17"/><path d="M546 96 q10 6 14 0"/><path d="M548 130 q10 6 14 0"/>
+    </g>
+    <!-- 车窗：里面亮着暖灯，窗沿垂着一圈毛 -->
+    <ellipse cx="380" cy="122" rx="160" ry="44" fill="url(#nbWarm)"/>
+    <g>
+      <rect x="236" y="92" width="50" height="56" rx="20" fill="#ffd98a" stroke="#a9682a" stroke-width="5"/>
+      <rect x="298" y="92" width="50" height="56" rx="20" fill="#ffd98a" stroke="#a9682a" stroke-width="5"/>
+      <rect x="360" y="92" width="50" height="56" rx="20" fill="#ffd98a" stroke="#a9682a" stroke-width="5"/>
+      <rect x="422" y="92" width="50" height="56" rx="20" fill="#ffd98a" stroke="#a9682a" stroke-width="5"/>
+      <rect x="484" y="92" width="50" height="56" rx="20" fill="#ffd98a" stroke="#a9682a" stroke-width="5"/>
+    </g>
+    <g fill="#e8a352">
+      <path d="M240 134 h42 v12 h-42z"/><path d="M302 134 h42 v12 h-42z"/><path d="M364 134 h42 v12 h-42z"/><path d="M426 134 h42 v12 h-42z"/><path d="M488 134 h42 v12 h-42z"/>
+    </g>
+    <g fill="#a9682a">
+      <path d="M244 96 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -10 Z"/><path d="M306 96 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -10 Z"/>
+      <path d="M368 96 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -10 Z"/><path d="M430 96 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -10 Z"/>
+      <path d="M492 96 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -8 l5 9 l5 -10 Z"/>
+    </g>
+    <!-- 背上的两只老鼠，眼睛就是车顶灯 -->
+    <g>
+      <ellipse cx="262" cy="52" rx="15" ry="9" fill="#8b8f99"/><circle cx="252" cy="44" r="5" fill="#a3a7b0"/><path d="M276 54 q14 2 18 -8" stroke="#8b8f99" stroke-width="2" fill="none"/>
+      <circle class="eye" cx="249" cy="51" r="3.4" fill="#ffe45c"/>
+      <ellipse cx="540" cy="58" rx="15" ry="9" fill="#8b8f99"/><circle cx="530" cy="50" r="5" fill="#a3a7b0"/><path d="M554 60 q14 2 18 -8" stroke="#8b8f99" stroke-width="2" fill="none"/>
+      <circle class="eye" cx="527" cy="57" r="3.4" fill="#ffe45c"/>
+    </g>
+    <!-- 尖尖的耳朵 -->
+    <path d="M38 78 L52 14 L104 52 Z" fill="#dc9440"/><path d="M52 64 L58 30 L90 54 Z" fill="#f2a990"/>
+    <path d="M178 46 L214 10 L226 70 Z" fill="#d18a3a"/><path d="M190 48 L210 24 L216 60 Z" fill="#e89a86"/>
+    <!-- 额头上的目的地牌 -->
+    <rect x="106" y="54" width="4" height="12" fill="#5a3a22"/><rect x="170" y="54" width="4" height="12" fill="#5a3a22"/>
+    <rect x="96" y="26" width="88" height="32" rx="5" fill="#f6efd8" stroke="#5a3a22" stroke-width="3"/>
+    <text id="busSign" x="140" y="49" text-anchor="middle" font-family="'Ma Shan Zheng','Noto Serif SC',serif" font-size="21" fill="#2a2a2e">靖尹</text>
+    <!-- 车灯一样的大眼睛 -->
+    <g class="eye"><circle cx="76" cy="104" r="44" fill="#ffe45c" opacity=".2"/><circle cx="76" cy="104" r="30" fill="url(#eyeg)" stroke="#8a5223" stroke-width="3"/><ellipse cx="78" cy="106" rx="4" ry="15" fill="#3a2214"/><circle cx="66" cy="93" r="6" fill="#fffef5" opacity=".9"/></g>
+    <g class="eye"><circle cx="168" cy="98" r="38" fill="#ffe45c" opacity=".16"/><circle cx="168" cy="98" r="25" fill="url(#eyeg)" stroke="#8a5223" stroke-width="3"/><ellipse cx="170" cy="100" rx="3.4" ry="12" fill="#3a2214"/><circle cx="160" cy="89" r="5" fill="#fffef5" opacity=".85"/></g>
+    <!-- 鼻子 -->
+    <path d="M114 130 h18 l-9 10 z" fill="#d9776a"/>
+    <!-- 咧到耳根的大笑，一整排牙 -->
+    <path d="M28 146 C 64 206, 196 208, 232 132 C 196 172, 70 176, 28 146 Z" fill="#5a2418"/>
+    <path d="M34 150 C 76 176, 190 174, 226 140 L 222 152 C 190 184, 80 186, 38 160 Z" fill="#fffaf0"/>
+    <g stroke="#d9cbb3" stroke-width="2">
+      <path d="M58 162 v12"/><path d="M80 168 v13"/><path d="M104 171 v14"/><path d="M128 172 v14"/><path d="M152 171 v14"/><path d="M176 166 v14"/><path d="M198 158 v13"/>
+    </g>
+    <path d="M28 146 C 70 176, 196 172, 232 132" stroke="#6b3018" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- 胡须 -->
+    <g stroke="#5a3a22" stroke-width="2" stroke-linecap="round" opacity=".7">
+      <path d="M56 136 L2 124"/><path d="M56 142 L0 144"/><path d="M58 148 L6 164"/>
+    </g>
+    <!-- 十二条腿：这一边的六条 -->
+    <g class="legs" fill="#d18a3a"><path d="M160 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M235 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M310 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M385 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M460 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/><path d="M530 194 c-3 16 -8 28 -10 38 c-1 6 4 8 14 8 c10 0 15 -2 14 -8 c-2 -10 -6 -22 -6 -38 z"/></g>
+  </svg>
+</div>
+
+<canvas id="sky"></canvas>
+
+<!-- ============ 舞台 ============ -->
+<main class="stage" id="stage">
+
+  <!-- 龙猫 -->
+  <div class="totoro-wrap" id="totoroWrap">
+    <svg class="totoro" viewBox="-28 -92 276 324" aria-hidden="true">
+      <!-- 小月给的黑伞 -->
+      <g class="brolly">
+        <path d="M75 -74 L 22 152" stroke="#6b5334" stroke-width="5" stroke-linecap="round"/>
+        <path d="M-14 -8 Q 18 -72 75 -76 Q 132 -72 164 -8 Q 148 4 134 -8 Q 118 4 104 -8 Q 89 4 75 -8 Q 61 4 46 -8 Q 32 4 16 -8 Q 0 4 -14 -8 Z" fill="#262b36"/>
+        <g stroke="#454c5c" stroke-width="1.6" opacity=".7" fill="none">
+          <path d="M75 -74 L-14 -8"/><path d="M75 -74 L16 -8"/><path d="M75 -74 L46 -8"/><path d="M75 -74 L75 -8"/><path d="M75 -74 L104 -8"/><path d="M75 -74 L134 -8"/><path d="M75 -74 L164 -8"/>
+        </g>
+        <path d="M75 -76 L75 -88" stroke="#262b36" stroke-width="4" stroke-linecap="round"/>
+        <!-- 打在伞面上的雨 -->
+        <ellipse class="drop" cx="32" cy="-50" rx="2.6" ry="3.4" fill="#d7e6ff"/>
+        <ellipse class="drop" cx="75" cy="-73" rx="2.6" ry="3.4" fill="#d7e6ff" style="animation-delay:-.5s"/>
+        <ellipse class="drop" cx="122" cy="-48" rx="2.6" ry="3.4" fill="#d7e6ff" style="animation-delay:-1s"/>
+      </g>
+      <defs>
+        <linearGradient id="ttFur" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#6c7178"/><stop offset=".45" stop-color="#868b92"/><stop offset="1" stop-color="#7a7f86"/>
+        </linearGradient>
+        <radialGradient id="ttBelly" cx=".5" cy=".35" r=".7">
+          <stop offset="0" stop-color="#f4efdc"/><stop offset="1" stop-color="#ddd5bb"/>
+        </radialGradient>
+      </defs>
+      <!-- 耳朵：又细又尖，直直竖着 -->
+      <path d="M64 52 C 56 32, 56 14, 62 -2 C 72 8, 84 28, 88 44 Z" fill="#70757c" stroke="var(--totoro-dark)" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M156 52 C 164 32, 164 14, 158 -2 C 148 8, 136 28, 132 44 Z" fill="#70757c" stroke="var(--totoro-dark)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- 身体：上小下大的梨形 -->
+      <path d="M110 28 C 150 28, 176 68, 186 118 C 196 164, 206 198, 182 212 C 160 224, 60 224, 38 212 C 14 198, 24 164, 34 118 C 44 68, 70 28, 110 28 Z" fill="url(#ttFur)" stroke="var(--totoro-dark)" stroke-width="2.5"/>
+      <!-- 头顶一点点毛 -->
+      <g stroke="var(--totoro-dark)" stroke-width="2" stroke-linecap="round"><path d="M104 30 l-2 -7"/><path d="M110 28 l0 -8"/><path d="M116 30 l2 -7"/></g>
+      <!-- 肚皮：又大又圆，几乎到下巴 -->
+      <path d="M110 84 C 158 84, 190 126, 190 168 C 190 204, 158 218, 110 218 C 62 218, 30 204, 30 168 C 30 126, 62 84, 110 84 Z" fill="url(#ttBelly)"/>
+      <!-- 七个 ^ 花纹：上面三个、下面四个 -->
+      <g fill="#767b82"><path transform="translate(88 106) scale(1)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(110 103) scale(1)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(132 106) scale(1)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(70 128) scale(1.05)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(97 124) scale(1.05)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(123 124) scale(1.05)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(150 128) scale(1.05)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/></g>
+      <!-- 手臂：短短的，带三根小爪 -->
+      <path d="M32 110 C 12 118, 6 150, 22 166 C 36 160, 42 134, 32 110 Z" fill="url(#ttFur)" stroke="var(--totoro-dark)" stroke-width="2"/>
+      <path d="M188 110 C 208 118, 214 150, 198 166 C 184 160, 178 134, 188 110 Z" fill="url(#ttFur)" stroke="var(--totoro-dark)" stroke-width="2"/>
+      <g stroke="#2a2c31" stroke-width="2.2" stroke-linecap="round"><path d="M16 162 l-5 6"/><path d="M21 166 l-3 7"/><path d="M27 166 l0 7"/><path d="M204 162 l5 6"/><path d="M199 166 l3 7"/><path d="M193 166 l0 7"/></g>
+      <!-- 眼睛：圆圆的、隔得很开，黑眼珠小小的 -->
+      <g class="eye-dot">
+        <circle cx="74" cy="64" r="12.5" fill="#fff" stroke="#2a2c31" stroke-width="2"/>
+        <circle cx="146" cy="64" r="12.5" fill="#fff" stroke="#2a2c31" stroke-width="2"/>
+        <!-- 眼珠会跟着指头转 -->
+        <g class="pupils">
+          <circle cx="77" cy="65" r="4.4" fill="#1f1f24"/><circle cx="143" cy="65" r="4.4" fill="#1f1f24"/>
+          <circle cx="78.4" cy="63.4" r="1.3" fill="#fff"/><circle cx="144.4" cy="63.4" r="1.3" fill="#fff"/>
+        </g>
+      </g>
+      <g class="eye-heart" fill="#e2678a">
+        <path transform="translate(61,53) scale(1.3)" d="M10 18 C 2 12 -1 6 3 2 C 6 -1 9 1 10 3 C 11 1 14 -1 17 2 C 21 6 18 12 10 18 Z"/>
+        <path transform="translate(133,53) scale(1.3)" d="M10 18 C 2 12 -1 6 3 2 C 6 -1 9 1 10 3 C 11 1 14 -1 17 2 C 21 6 18 12 10 18 Z"/>
+      </g>
+      <!-- 鼻子：扁扁的一小块 -->
+      <path d="M100 74 Q110 69 120 74 Q117 82 110 83 Q103 82 100 74 Z" fill="#1f1f24"/>
+      <!-- 胡须：一边三根，长长的 -->
+      <g stroke="#1f1f24" stroke-width="2" stroke-linecap="round">
+        <path d="M60 82 L18 74"/><path d="M60 89 L14 90"/><path d="M62 96 L20 106"/>
+        <path d="M160 82 L202 74"/><path d="M160 89 L206 90"/><path d="M158 96 L200 106"/>
+      </g>
+      <!-- 嘴：平时 / 伤心 / 大笑 -->
+      <path class="mouth-calm" d="M90 92 Q110 97 130 92" stroke="#1f1f24" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path class="mouth-sad" d="M96 100 Q110 89 124 100" stroke="#1f1f24" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <g class="mouth-grin">
+        <path d="M60 86 C 80 148, 140 148, 160 86 Z" fill="#3a2530"/>
+        <path d="M64 88 L156 88 L151 99 C 134 106, 86 106, 69 99 Z" fill="#fff"/>
+        <g stroke="#3a2530" stroke-width="1.8"><path d="M80 88 v13"/><path d="M95 88 v15"/><path d="M110 88 v16"/><path d="M125 88 v15"/><path d="M140 88 v13"/></g>
+        <path d="M86 128 C 98 136, 122 136, 134 128 C 124 122, 96 122, 86 128 Z" fill="#c4606f"/>
+      </g>
+      <path class="tear" d="M66 80 q-7 12 0 20 q7 -7 0 -20z" fill="#8ec9ea"/>
+      <!-- 脚：扁扁宽宽，三根爪 -->
+      <ellipse cx="76" cy="217" rx="28" ry="9" fill="#7a7f86" stroke="var(--totoro-dark)" stroke-width="2"/>
+      <ellipse cx="144" cy="217" rx="28" ry="9" fill="#7a7f86" stroke="var(--totoro-dark)" stroke-width="2"/>
+      <!-- 叶子包着的橡果，送给你 -->
+      <ellipse cx="-2" cy="226" rx="21" ry="5" fill="#000" opacity=".28"/>
+      <g class="gift">
+        <path d="M-20 224 C -25 204, -14 193, -2 193 C 10 193, 21 204, 16 224 Z" fill="#6f9a52"/>
+        <g stroke="#6f9a52" stroke-width="5" stroke-linecap="round"><path d="M-2 193 l-9 -13"/><path d="M-2 193 l9 -13"/><path d="M-2 193 l0 -17"/></g>
+        <path d="M-22 210 q20 7 40 0" stroke="#e0cb93" stroke-width="3" fill="none"/>
+      </g>
+      <g stroke="#2a2c31" stroke-width="2.2" stroke-linecap="round"><path d="M62 222 l-2 5"/><path d="M76 224 l0 5"/><path d="M90 222 l2 5"/><path d="M130 222 l-2 5"/><path d="M144 224 l0 5"/><path d="M158 222 l2 5"/></g>
+    </svg>
+    <!-- 中龙猫和小龙猫 -->
+    <div class="littles" aria-hidden="true"><svg viewBox="0 0 120 80">
+      <!-- 中龙猫：蓝蓝的，背着一小袋橡果 -->
+      <path d="M57 50 C 66 46, 74 54, 72 66 C 70 74, 62 76, 56 72 Z" fill="#c9a26b" stroke="#9c7a48" stroke-width="1.2"/>
+      <path d="M60 48 q4 -4 8 0" stroke="#9c7a48" stroke-width="1.5" fill="none"/>
+      <path d="M31 22 C 29 14, 30 8, 32 4 C 35 9, 37 15, 37 22 Z" fill="#7d9ccc" stroke="#5f7fb2" stroke-width="1"/>
+      <path d="M49 22 C 51 14, 50 8, 48 4 C 45 9, 43 15, 43 22 Z" fill="#7d9ccc" stroke="#5f7fb2" stroke-width="1"/>
+      <path d="M40 17 C 56 17, 65 38, 67 55 C 69 72, 58 78, 40 78 C 22 78, 11 72, 13 55 C 15 38, 24 17, 40 17 Z" fill="#7d9ccc" stroke="#5f7fb2" stroke-width="1.5"/>
+      <path d="M40 44 C 54 44, 62 54, 62 63 C 62 72, 52 76, 40 76 C 28 76, 18 72, 18 63 C 18 54, 26 44, 40 44 Z" fill="#e6eef7"/>
+      <g fill="#7d9ccc"><path transform="translate(32 54) scale(0.55)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(40 52) scale(0.55)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/><path transform="translate(48 54) scale(0.55)" d="M-9 6 L0 -4 L9 6 L5.5 7 L0 1.5 L-5.5 7 Z"/></g>
+      <circle cx="31" cy="34" r="5.4" fill="#fff" stroke="#2a2c31" stroke-width="1"/><circle cx="49" cy="34" r="5.4" fill="#fff" stroke="#2a2c31" stroke-width="1"/>
+      <circle cx="32" cy="34.5" r="2.4" fill="#1f1f24"/><circle cx="48" cy="34.5" r="2.4" fill="#1f1f24"/>
+      <path d="M37.5 40 Q40 38.5 42.5 40 Q41 42 40 42 Q39 42 37.5 40 Z" fill="#1f1f24"/>
+      <!-- 小龙猫：白白的、最小的那只 -->
+      <g class="chibi">
+        <path d="M91 50 C 89 43, 90 38, 92 35 C 94 39, 95 44, 95 49 Z" fill="#fbfbf6" stroke="#cfd3c9" stroke-width="1"/>
+        <path d="M101 50 C 103 43, 102 38, 100 35 C 98 39, 97 44, 97 49 Z" fill="#fbfbf6" stroke="#cfd3c9" stroke-width="1"/>
+        <path d="M96 46 C 105 46, 111 57, 112 66 C 113 75, 106 78, 96 78 C 86 78, 79 75, 80 66 C 81 57, 87 46, 96 46 Z" fill="#fbfbf6" stroke="#cfd3c9" stroke-width="1.2"/>
+        <circle cx="92" cy="57" r="1.9" fill="#1f1f24"/><circle cx="100" cy="57" r="1.9" fill="#1f1f24"/>
+        <circle cx="96" cy="60.5" r="1" fill="#1f1f24"/>
+      </g>
+    </svg></div>
+  </div>
+
+  <!-- 站牌 -->
+  <div class="busstop" aria-hidden="true"><svg viewBox="0 0 92 306">
+    <rect x="43" y="82" width="6" height="224" fill="#2b2f3b"/>
+    <circle cx="46" cy="44" r="39" fill="#f5f1e2" stroke="#2b2f3b" stroke-width="4"/>
+    <text x="46" y="43" text-anchor="middle" font-family="var(--jp)" font-weight="700" font-size="21" fill="#2b2f3b" letter-spacing="1">稲荷前</text>
+    <text x="46" y="62" text-anchor="middle" font-family="var(--jp)" font-size="9" fill="#5a5f6b" letter-spacing="2">いなりまえ</text>
+    <rect x="12" y="96" width="68" height="19" rx="2" fill="#f5f1e2" stroke="#2b2f3b" stroke-width="2"/>
+    <text x="46" y="110" text-anchor="middle" font-family="var(--jp)" font-size="11" fill="#2b2f3b" letter-spacing="2">塚森</text>
+  </svg></div>
+
+  <div class="cards">
+    <!-- 启动卡 -->
+    <section class="card intro" id="intro">
+      <div class="seal">亲启</div>
+      <span class="eyebrow">献给</span>
+      <h1 id="introTitle">靖尹</h1>
+      <p class="sub">你带我看的第一部宫崎骏，是《幽灵公主》。<br>所以我一块一块拼了阿席达卡和小桑。<br>今晚在稲荷前的这个站牌下，想先放给你看，<br>再说一句一直想说的话。</p>
+      <p class="from" id="introFrom">—— 锦斌</p>
+      <button class="btn yes" id="start" type="button">开始放映</button>
+      <p class="credits">となりのトトロ ・ もののけ姫 ・ 魔女の宅急便 ・ 千と千尋の神隠し</p>
+      <!-- 只有网址后面加 ?edit 才会出现（给你自己调试用，她看不到） -->
+      <div class="tiny" id="tools" hidden>
+        <span id="videoCount">影片：<span class="count">0</span> 段</span>
+        <button type="button" id="pick">添加影片</button>
+        <button type="button" id="skipAll">跳过影片</button>
+      </div>
+      <input type="file" id="fileInput" accept="video/*" multiple hidden>
+    </section>
+
+    <!-- 告白卡 -->
+    <section class="card" id="card" hidden>
+      <svg class="piece p1" viewBox="0 0 40 40" aria-hidden="true"><path fill="#ec7f9f" d="M4 4h12a5 5 0 0 1 8 0h12v12a5 5 0 0 0 0 8v12H24a5 5 0 0 1-8 0H4V24a5 5 0 0 0 0-8Z"/></svg>
+      <svg class="piece p2" viewBox="0 0 40 40" aria-hidden="true"><path fill="#f6b6c8" d="M4 4h12a5 5 0 0 1 8 0h12v12a5 5 0 0 0 0 8v12H24a5 5 0 0 1-8 0H4V24a5 5 0 0 0 0-8Z"/></svg>
+      <span class="eyebrow">最后一块</span>
+      <h1 id="title">你愿意做我的<em>女朋友</em>吗？</h1>
+      <p class="sub" id="sub">我拼了那么多幅世界，<br>还差最后一块，是你。</p>
+      <div class="buttons" id="buttons">
+        <button class="btn yes" id="yes" type="button">同意</button>
+        <button class="btn no" id="no" type="button">不同意</button>
+      </div>
+      <p class="footer">这一块只能放在这里，别的地方都不合适</p>
+    </section>
+
+    <!-- 成功卡 -->
+    <section class="card" id="win" hidden>
+      <span class="eyebrow">拼图完成</span>
+      <h1 id="winTitle">耶！<em>靖尹</em><br>答应我啦！</h1>
+      <p class="sub" id="winSub">最后一块终于放好了。<br>像阿席达卡和小桑那样，往后的日子我们一起活下去。<br>夜行巴士来了，这次的目的地是你。</p>
+      <div class="stamp">正式在一起<small id="stampLine"></small></div>
+      <button class="btn yes board" id="board" type="button" hidden>一起上车 ›</button>
+      <button class="again" id="again" type="button" hidden>从头再看一遍</button>
+    </section>
+  </div>
+</main>
+
+<audio id="bgm" loop preload="auto"></audio>
+<button id="music" class="music" type="button" hidden aria-label="背景音乐开关">♪</button>
+
+<script>
+(function () {
+  // ======================================================
+  //  可自定义：改这里
+  // ======================================================
+  const params = new URLSearchParams(location.search);
+  const NAME = params.get('to') || '靖尹';   // 对方
+  const FROM = params.get('from') || '锦斌';  // 你
+  const ROLE = params.get('role') || '女朋友';
+
+  // 开场影片：把视频文件放在和这个 html 同一个文件夹的 videos/ 里，
+  // 按播放顺序写在下面。也可以在启动页点"添加影片"临时选择。
+  const VIDEOS = [
+    'videos/1-light.mp4',   // 手机上秒开；原画质是 videos/1.mp4（91MB，网络慢会转圈）
+    'videos/2-new.mp4',     // 第二段；原片是 26C4C208-….MOV（HEVC，浏览器多半放不动，已转好）
+    // 还有别的就照着上面一行往下加，按播放顺序
+  ];
+  // 她点了"同意"之后再放的影片；不想要就写成 []
+  const AFTER_VIDEOS = [
+    // 'videos/2.mp4',      // 想放回来就把这行前面的 // 删掉
+  ];
+
+  // 背景音乐：把文件放进 audio/ 里，改成你的文件名；不想要就写成 ''
+  const BGM = 'audio/bgm.mp3';   // 放你挑的那首钢琴曲；留空＝改用下面那台自动弹的小琴
+
+  // 想用自己的图？把图片放进 images/ 文件夹，在这里写上文件名就行。
+  // 留空＝用页面自己画的那个。透明底的 png 最好看。
+  const PICS = {
+    ember:  'images/kasifa.png',    // 放影片时，飘在右上角的小火灵
+    friend: 'images/friend.png',      // 再加一只小伙伴，蹲在另外三只旁边
+    cinema: 'images/wallpaper-web.jpg', // 放影片时，衬在后面的背景（原图 wallpaper.jpg 2.8MB，这是压过的）
+    couple: 'images/couple.png',    // 放影片时，贴在左下角的那张
+    flyer:  'images/castle.png',    // 放影片时，慢慢从天上飘过去的那个
+    dust:   'images/dust.png',      // 影片底下飘的那些小东西（留空＝用画的）
+  };
+  const BGM_VOLUME = 0.42;   // 平常的音量
+  const BGM_DUCK = 0.10;     // 放影片时压低到这个音量
+  const POSTER = 'images/poster1.jpg';   // 第一段影片还没出画面时先垫着的那一帧
+
+  // 她点了"一起上车"、巴士开走之后，卡片上换成这段话（<br> 是换行）
+  const LAST_WORDS = '下一站，是我们以后的每一天。<br>这张车票，我会一直替你收好。';
+
+  // 点龙猫的时候它冒出来的话，按顺序轮着说
+  // （字体只留了页面上用到的字，换成别的字会用系统字体顶上）
+  const TOTORO_SAYS = ['呼——', '嗯？', '别碰肚皮啦', '雨好大，伞给你', '我在等你啊', '再点，我要害羞了'];
+  const TOTORO_HAPPY = ['耶！', '真好啊', '心跳好大声', '一起上车吧'];   // 她答应之后说的
+  const GIFT_SAYS = '橡果，送给你';                                    // 点龙猫脚边那包叶子
+  // ======================================================
+
+  const EDIT = params.has('edit');   // 网址后面加 ?edit：显示"添加影片 / 跳过影片"，也不会记住答案
+  const SAVE_KEY = 'inarimae-yes';
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const intro = $('intro'), card = $('card'), win = $('win');
+  const yes = $('yes'), no = $('no'), sub = $('sub');
+  const SUB_HTML = sub.innerHTML;
+  const wrap = $('totoroWrap');
+
+  const m = NAME.match(/^(.*?)(女士|先生|小姐|同学)?$/);
+  const SHE = m[1];                                             // 只留名字，称呼一律不显示
+  $('coverTo').textContent = '给 ' + SHE;
+  const ME = FROM.replace(/(女士|先生|小姐|同学)$/, '');          // 落款也一样
+  $('introTitle').textContent = SHE;
+  $('introFrom').textContent = '—— ' + ME;
+  $('title').innerHTML = esc(SHE) + '，<br>你愿意做我的<em>' + esc(ROLE) + '</em>吗？';
+  $('winTitle').innerHTML = '耶！<em>' + esc(SHE) + '</em><br>答应我啦！';
+  const sign = $('busSign');
+  sign.textContent = SHE;
+  // 站牌只有 112 宽：名字长了就把字缩小，别跑出牌子
+  if (SHE.length > 4) sign.setAttribute('font-size', Math.max(10, Math.floor(96 / SHE.length)));
+  $('stampLine').textContent = today() + ' · ' + ME + ' 敬上';
+  if (EDIT) $('tools').hidden = false;
+
+  // 星星
+  let st = '';
+  for (let k = 0; k < 70; k++) st += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;top:' + (Math.random() * 55).toFixed(1) + '%;opacity:' + (0.2 + Math.random() * 0.5).toFixed(2) + '"></i>';
+  $('stars').innerHTML = st;
+  // 白天的云（先藏着，上车以后才出来）
+  const cloudSvg = '<svg viewBox="0 0 200 90"><g fill="#fff"><ellipse cx="60" cy="60" rx="40" ry="26"/><ellipse cx="100" cy="42" rx="44" ry="36"/>' +
+    '<ellipse cx="145" cy="56" rx="38" ry="28"/><rect x="40" y="56" width="128" height="30" rx="15"/></g></svg>';
+  let cl = '';
+  for (let k = 0; k < 6; k++) {
+    const dur = 70 + Math.random() * 60;
+    cl += '<div class="cloud" style="top:' + (3 + Math.random() * 30).toFixed(1) + 'vh;width:' + (110 + Math.random() * 140).toFixed(0) +
+      'px;opacity:' + (0.75 + Math.random() * 0.25).toFixed(2) + ';animation-duration:' + dur.toFixed(0) + 's;animation-delay:-' + (Math.random() * dur).toFixed(0) + 's">' + cloudSvg + '</div>';
+  }
+  $('clouds').innerHTML = cl;
+
+  // ---- 换图：填了就用图片，没填就用画的 ----
+  function swapPic(sel, src) {
+    if (!src) return;
+    const el = document.querySelector(sel);
+    if (!el) return;
+    const img = new Image();
+    img.alt = '';
+    img.onerror = () => { console.warn('这张图没找到：' + src); };
+    img.src = src;
+    el.innerHTML = '';
+    el.appendChild(img);
+  }
+  // 一大群小东西，撒在站牌这一屏
+  if (PICS.dust) {
+    const scene = document.querySelector('.scene');
+    scene.style.setProperty('--dust', "url('" + PICS.dust + "')");
+    let swarm = '';
+    for (let k = 0; k < 38; k++) {
+      const sz = (7 + Math.random() * 13).toFixed(0);
+      swarm += '<i class="dust" style="left:' + (1 + Math.random() * 97).toFixed(1) + '%;bottom:' + (1 + Math.random() * 17).toFixed(1) +
+        'vh;width:' + sz + 'px;height:' + sz + 'px;animation-delay:-' + (Math.random() * 2).toFixed(2) +
+        's;animation-duration:' + (1.3 + Math.random() * 1.4).toFixed(2) + 's;--hide:' + (Math.random() * 2.2).toFixed(2) + 's"></i>';
+    }
+    scene.insertAdjacentHTML('beforeend', swarm);   // 放最后，才压得住路面
+  }
+  if (PICS.friend) {
+    const f = document.createElement('div');
+    f.className = 'friend';
+    document.querySelector('.scene').appendChild(f);
+    swapPic('.friend', PICS.friend);
+  }
+
+  // ---- 背景音乐 ----
+  // 有 audio/ 里的文件就放文件；没有的话，下面这台小琴会自己弹一首，永远不重样
+  const live = (() => {
+    let ctx = null, master = null, bus = null, timer = null, nextT = 0, deg = 3, bar = 0;
+    const beat = 0.62, root = 261.63;                 // C4
+    const pent = [-12, -5, 0, 2, 4, 7, 9, 12, 14, 16];
+    const chords = [[-24, -12, -5], [-22, -10, -3], [-19, -7, 0], [-17, -5, 2]];
+    const hz = (semi) => root * Math.pow(2, semi / 12);
+    function voice(freq, t, dur, vol, type) {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(master); g.connect(bus);
+      o.start(t); o.stop(t + dur + 0.03);
+    }
+    function step(t) {
+      if (bar % 8 === 0) {                            // 每八拍换一次和弦，垫在底下
+        for (const semi of chords[(bar / 8) % chords.length]) voice(hz(semi), t, 4.6, 0.045, 'triangle');
+      }
+      if (Math.random() < 0.72) {                     // 旋律自己散步，不会走太远
+        const jump = (Math.random() < 0.78 ? 1 : 2) * (Math.random() < 0.5 ? -1 : 1);
+        deg = Math.max(0, Math.min(pent.length - 1, deg + jump));
+        voice(hz(pent[deg]), t, 1.7, 0.08, 'sine');
+        if (Math.random() < 0.22) voice(hz(pent[deg] + 12), t + 0.08, 1.1, 0.028, 'sine');
+      }
+      bar += 1;
+    }
+    return {
+      start() {
+        if (!ctx) {
+          ctx = new (window.AudioContext || window.webkitAudioContext)();
+          master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+          const echo = ctx.createDelay(1), back = ctx.createGain();
+          bus = ctx.createGain(); bus.gain.value = 0.3;
+          echo.delayTime.value = 0.42; back.gain.value = 0.33;
+          bus.connect(echo); echo.connect(back); back.connect(echo); echo.connect(master);
+          nextT = ctx.currentTime + 0.2;
+        }
+        if (!timer) timer = setInterval(() => {
+          while (nextT < ctx.currentTime + 0.7) { step(nextT); nextT += beat; }
+        }, 140);
+        ctx.resume();            // 不等它，浏览器一准好就出声
+        return Promise.resolve();
+      },
+      stop() { clearInterval(timer); timer = null; if (ctx) ctx.suspend(); },
+      setGain(v) { if (master) master.gain.setTargetAtTime(v * 0.6, ctx.currentTime, 0.04); },
+    };
+  })();
+
+  const bgm = $('bgm'), musicBtn = $('music');
+  let ducked = false, musicOn = false, useLive = !BGM, vol = 0, fadeTimer = null;
+  if (BGM) {
+    bgm.src = BGM;
+    bgm.volume = 0;
+    bgm.addEventListener('error', () => { useLive = true; });   // 文件不在？那就现场弹
+  }
+  // iPhone 上 audio.volume 是只读的，淡入淡出、放影片时压低音量都不起作用 ——
+  // 所以第一次碰屏幕时，把音乐接到 Web Audio 的音量旋钮上
+  let actx = null, gainNode = null;
+  function wireGain() {
+    if (useLive || gainNode) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      actx = new AC();
+      gainNode = actx.createGain();
+      gainNode.gain.value = vol;
+      actx.createMediaElementSource(bgm).connect(gainNode);
+      gainNode.connect(actx.destination);
+      bgm.volume = 1;
+      if (actx.state === 'suspended') actx.resume();
+    } catch (e) { gainNode = null; }
+  }
+  function setVol(v) {
+    vol = v;
+    if (useLive) live.setGain(v);
+    else if (gainNode) gainNode.gain.value = v;
+    else bgm.volume = v;
+  }
+  function bgmLevel() { return ducked ? BGM_DUCK : BGM_VOLUME; }
+  function fadeTo(target, ms) {
+    clearInterval(fadeTimer);
+    const from = vol, steps = Math.max(1, Math.round(ms / 50));
+    let k = 0;
+    fadeTimer = setInterval(() => {
+      k += 1;
+      setVol(Math.max(0, Math.min(1, from + (target - from) * (k / steps))));
+      if (k >= steps) { clearInterval(fadeTimer); if (target === 0) { useLive ? live.stop() : bgm.pause(); } }
+    }, 50);
+  }
+  function duck(on) { ducked = on; if (musicOn) fadeTo(bgmLevel(), 600); }
+  let starting = false, musicPaused = false;
+  function startBgm() {
+    if (musicOn || starting || musicPaused) return;
+    starting = true;
+    setVol(0);
+    Promise.resolve(useLive ? live.start() : bgm.play()).then(() => {
+      starting = false;
+      musicOn = true;
+      musicBtn.hidden = false;
+      musicBtn.classList.remove('off');
+      fadeTo(bgmLevel(), 1400);
+    }).catch((err) => {
+      starting = false;
+      // 浏览器不让自动放：等她碰一下屏幕再放（见下面）
+      if (err && err.name === 'NotAllowedError') return;
+      if (!useLive) { useLive = true; startBgm(); }              // 文件真的放不出来，换现场弹的
+    });
+  }
+  // 一打开就先试着放；被浏览器拦下来的话，她第一次碰屏幕（随便哪里）就开始
+  musicBtn.hidden = false;
+  musicBtn.classList.add('off');
+  startBgm();
+  document.addEventListener('WeixinJSBridgeReady', startBgm);    // 微信里打开，可以直接放
+  const unlock = (e) => {
+    if (e.target && e.target.closest && e.target.closest('#music')) return;   // 点音乐按钮的交给按钮自己
+    wireGain();
+    startBgm();
+    if (musicOn || musicPaused) ['touchend', 'click', 'keydown'].forEach(t => document.removeEventListener(t, unlock, true));
+  };
+  ['touchend', 'click', 'keydown'].forEach(t => document.addEventListener(t, unlock, true));
+  const cover = $('cover');
+  function openCover() {
+    if (cover.classList.contains('open')) return;
+    wireGain();
+    startBgm();
+    cover.classList.add('open');
+    setTimeout(() => cover.remove(), 1000);
+  }
+  cover.addEventListener('click', openCover);
+  cover.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCover(); } });
+  cover.focus();
+  musicBtn.addEventListener('click', () => {
+    wireGain();
+    musicOn = !musicOn;
+    musicPaused = !musicOn;
+    musicBtn.classList.toggle('off', !musicOn);
+    if (musicOn) Promise.resolve(useLive ? live.start() : bgm.play())
+      .then(() => fadeTo(bgmLevel(), 400))
+      .catch(() => { musicOn = false; musicBtn.classList.add('off'); });
+    else fadeTo(0, 400);
+  });
+
+  // ---- 一个字一个字地写出来 ----
+  let typeTimer = null;
+  function typeInto(el, html, speed) {
+    clearTimeout(typeTimer);
+    const tokens = [];
+    for (const part of html.split(/(<br\s*\/?>)/i)) {
+      if (/^<br/i.test(part)) tokens.push('<br>');
+      else for (const ch of part) tokens.push(ch);
+    }
+    if (reduce) { el.innerHTML = html; return; }
+    el.classList.add('typing');
+    el.innerHTML = '';
+    let out = '', k = 0;
+    (function step() {
+      if (k >= tokens.length) { el.classList.remove('typing'); return; }
+      const t = tokens[k++];
+      out += t;
+      el.innerHTML = out;
+      typeTimer = setTimeout(step, t === '<br>' ? speed * 7 : /[，。、！？…]/.test(t) ? speed * 4 : speed);
+    })();
+  }
+
+  // ---- 影片列表 ----
+  let playlist = VIDEOS.slice();
+  // 她还在看启动卡的时候，第一段就先在后台下载，点了"开始放映"马上能放
+  const film = document.createElement('video');
+  film.setAttribute('playsinline', '');
+  film.setAttribute('controls', '');
+  film.setAttribute('controlslist', 'noplaybackrate');   // 让她能存下来
+  film.preload = 'auto';
+  if (POSTER) film.poster = POSTER;
+  if (playlist.length) film.src = playlist[0];
+  const videoCount = $('videoCount').querySelector('.count');
+  videoCount.textContent = playlist.length;
+  $('pick').addEventListener('click', () => $('fileInput').click());
+  $('fileInput').addEventListener('change', () => {
+    const files = Array.from($('fileInput').files || []);
+    if (!files.length) return;
+    playlist = playlist.concat(files.map(f => URL.createObjectURL(f)));
+    videoCount.textContent = playlist.length;
+    $('pick').textContent = '继续添加';
+  });
+  $('start').addEventListener('click', () => { startBgm(); if (playlist.length) playCinema(playlist); else showCard(); });
+  $('skipAll').addEventListener('click', () => { startBgm(); showCard(); });
+
+  function leave(el, then) {
+    el.classList.add('leaving');
+    setTimeout(() => { el.hidden = true; el.classList.remove('leaving'); then && then(); }, 380);
+  }
+
+  // ---- 影院 ----
+  // done = 放完以后做什么；skipLabel = 右上角跳过按钮上的字
+  function playCinema(list, done = showCard, skipLabel = '看最后一块 ›') {
+    const cinema = document.createElement('section');
+    cinema.className = 'cinema';
+    let stars = '';
+    for (let k = 0; k < 60; k++) stars += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;top:' + (Math.random() * 70).toFixed(1) + '%;animation-delay:' + (Math.random() * 3).toFixed(2) + 's;transform:scale(' + (0.5 + Math.random()).toFixed(2) + ')"></i>';
+    // 稲荷前的坡上，一排小鸟居往远处退
+    const torii = (x, y, sc, op) =>
+      '<g transform="translate(' + x + ' ' + y + ') scale(' + sc + ')" opacity="' + op + '">' +
+        '<rect x="-13" y="-34" width="5" height="34" rx="1"/><rect x="8" y="-34" width="5" height="34" rx="1"/>' +
+        '<path d="M-21 -41 h42 l-3 6 h-36 z"/><rect x="-15" y="-27" width="30" height="4.5" rx="1"/>' +
+      '</g>';
+    // 飘起来的河灯
+    let lanterns = '';
+    for (let k = 0; k < 7; k++) {
+      const side = k % 2 ? 4 + Math.random() * 12 : 84 + Math.random() * 12;
+      lanterns += '<i class="lantern" style="left:' + side.toFixed(1) + '%;bottom:' + (6 + Math.random() * 14).toFixed(1) +
+        'vh;animation-duration:' + (16 + Math.random() * 12).toFixed(1) + 's;animation-delay:-' + (Math.random() * 16).toFixed(1) + 's"></i>';
+    }
+    cinema.innerHTML =
+      (PICS.cinema ? '<div class="filmbg" style="background-image:url(\'' + PICS.cinema + '\')"></div>' : '') +
+      (PICS.couple ? '<div class="couple"><img src="' + PICS.couple + '" alt=""></div>' : '') +
+      '<div class="stars">' + stars + '</div>' +
+      '<div class="torii"><svg viewBox="0 0 300 70" aria-hidden="true"><g fill="#8e3b33">' +
+        torii(34, 62, 1, .85) + torii(96, 58, .78, .7) + torii(146, 55, .6, .56) +
+        torii(186, 53, .46, .44) + torii(216, 51, .35, .34) + torii(239, 50, .26, .26) +
+      '</g></svg></div>' +
+      lanterns +
+      (PICS.flyer ? '<div class="flyer"><img src="' + PICS.flyer + '" alt=""></div>' : '') +
+      (PICS.ember ? '<div class="ember"><img src="' + PICS.ember + '" alt=""></div>' : '') +
+      '<div class="bar"><b>献给 ' + SHE + '</b>' +
+      '<span class="tools"><a class="skip save" href="" download>⬇ 存下这段</a>' +
+      '<button class="skip" type="button">' + skipLabel + '</button></span></div>' +
+      '<div class="screen">' +
+        '<button class="tap" type="button" hidden><span>▶ 点一下开始</span></button>' +
+        '<button class="unmute" type="button" hidden>🔇 点一下开声音</button>' +
+        '<button class="nav prev" type="button" aria-label="上一段" hidden>‹</button>' +
+        '<button class="nav next" type="button" aria-label="下一段">›</button></div>' +
+      (list.length > 1 ? '<div class="dots">' + list.map(() => '<i></i>').join('') + '</div>' : '<div class="dots"></div>');
+    const video = film;
+    cinema.querySelector('.screen').prepend(video);
+    const tap = cinema.querySelector('.tap');
+    const prev = cinema.querySelector('.nav.prev');
+    const next = cinema.querySelector('.nav.next');
+    const unmute = cinema.querySelector('.unmute');
+    const skip = cinema.querySelector('button.skip');
+    const save = cinema.querySelector('.save');
+    const dots = cinema.querySelectorAll('.dots i');
+    const ember = cinema.querySelector('.ember');
+    if (ember) ember.addEventListener('click', () => replay(ember, 'flare', 750));
+    let i = 0;
+    function load(n) {
+      if (n < 0) return;
+      if (n >= list.length) { finish(); return; }
+      i = n;
+      dots.forEach((d, k) => { d.className = k < n ? 'done' : k === n ? 'on' : ''; });
+      prev.hidden = n === 0;
+      next.setAttribute('aria-label', n === list.length - 1 ? '看最后一块' : '下一段');
+      if (video.getAttribute('src') !== list[n]) {   // 同一段就别重新下载了
+        video.src = list[n];
+        video.removeAttribute('poster');             // 海报只配第一段
+        if (n === 0 && POSTER) video.poster = POSTER;
+      } else video.currentTime = 0;
+      // 下载按钮跟着当前这段走；本地临时选的影片（blob:）没有文件名，就叫“影片”
+      save.href = list[n];
+      save.setAttribute('download', list[n].startsWith('blob:') ? '影片.mp4' : list[n].split('/').pop());
+      video.muted = false;
+      unmute.hidden = true;
+      playNow();
+    }
+    // 自动播放被浏览器挡住时：先试着静音播，再不行就让她点一下
+    function playNow() {
+      tap.hidden = true;
+      const p = video.play();
+      if (!p || !p.then) { duck(!video.muted); return; }
+      p.then(() => duck(!video.muted)).catch(() => {
+        video.muted = true;
+        video.play().then(() => { unmute.hidden = false; duck(false); })
+                    .catch(() => { tap.hidden = false; });
+      });
+    }
+    tap.addEventListener('click', () => { video.muted = false; playNow(); });
+    unmute.addEventListener('click', () => { video.muted = false; unmute.hidden = true; duck(true); });
+    let over = false;
+    function finish() {
+      if (over) return;
+      over = true;
+      // 同一个 video 下一场还要用，先把这一场的监听拿掉
+      video.removeEventListener('ended', onEnded);
+      video.removeEventListener('error', onError);
+      duck(false);
+      video.pause();
+      cinemaOn = false;
+      if (!reduce) sweep();                    // 一阵风把叶子吹过来
+      cinema.classList.add('leaving');         // 画面收成一个圆点
+      setTimeout(() => { cinema.remove(); done(); }, reduce ? 380 : 620);   // 要等圆点收完，别提前拿掉
+    }
+    const onEnded = () => setTimeout(() => { if (!over) load(i + 1); }, 320);
+    const onError = () => load(i + 1);
+    video.addEventListener('ended', onEnded);
+    video.addEventListener('error', onError);
+    prev.addEventListener('click', () => load(i - 1));
+    next.addEventListener('click', () => load(i + 1));
+    skip.addEventListener('click', finish);
+    const open = () => { document.body.appendChild(cinema); cinemaOn = true; load(0); };
+    if (intro.hidden) open(); else leave(intro, open);
+  }
+
+  function greet() {
+    wrap.classList.add('greet');
+    clearTimeout(greet._t);
+    greet._t = setTimeout(() => wrap.classList.remove('greet'), 1500);
+  }
+  function showCard() {
+    const reveal = () => { card.hidden = false; typeInto(sub, SUB_HTML, 70); greet(); };
+    if (!intro.hidden) leave(intro, reveal);
+    else reveal();
+  }
+
+  // ---- 告白互动 ----
+  const pleas = [
+    '啊？你确定吗？再想想嘛…',
+    '这个按钮好像有点害羞，不太想被点。',
+    '龙猫会很伤心的 QAQ',
+    '你看，龙猫的伞都垂下去了。',
+    '求求你啦，就答应嘛~',
+    '阿席达卡和小桑的拼图差一块就完成了，你忍心吗？',
+    '"同意"越来越大了，是不是在暗示什么？',
+    '好吧好吧，我再问一次：愿意吗？',
+    '阿席达卡都等到小桑了，我也想等到你。',
+    '真的不再考虑一下吗？（小声）',
+  ];
+  const noLabels = ['不同意', '不太想', '再想想', '嗯…', '好像…', '有点心动', '算了', '好吧', '同意', '同意！！'];
+  let dodges = 0;
+  // 按钮被逼到写着"同意"以后，就不再跑了 —— 点它等于答应
+  const surrendered = () => dodges >= noLabels.length - 2;
+
+  function dodge() {
+    if (surrendered()) return;
+    clearTimeout(typeTimer);
+    sub.classList.remove('typing');
+    dodges += 1;
+    wrap.classList.add('mood-sad');
+    clearTimeout(dodge._t);
+    dodge._t = setTimeout(() => wrap.classList.remove('mood-sad'), 900);
+
+    yes.style.setProperty('--grow', Math.min(1 + dodges * 0.18, 2.4));
+    sub.textContent = pleas[Math.min(dodges - 1, pleas.length - 1)];
+    no.textContent = noLabels[Math.min(dodges, noLabels.length - 1)];
+
+    const sc = Math.max(1 - dodges * 0.07, 0.55);
+    no.style.transform = 'scale(' + sc + ')';
+    // 卡片身上挂着进场动画，fixed 会被它当成参照物、跑到屏幕外 —— 所以第一次逃跑就把按钮搬到 body 上
+    if (!no.classList.contains('fleeing')) {
+      const r0 = no.getBoundingClientRect();
+      no.classList.add('fleeing');
+      no.style.left = r0.left + 'px'; no.style.top = r0.top + 'px';
+      document.body.appendChild(no);
+      void no.offsetWidth;                                    // 先站在原地，再滑过去
+    }
+    // 按缩放后的真实大小、手机上真正看得见的那块区域来算
+    const vv = window.visualViewport;
+    const vw = vv ? vv.width : window.innerWidth, vh = vv ? vv.height : window.innerHeight;
+    const ox = vv ? vv.offsetLeft : 0, oy = vv ? vv.offsetTop : 0;
+    const w0 = no.offsetWidth, h0 = no.offsetHeight;
+    const w = w0 * sc, h = h0 * sc, pad = 14;
+    const shiftX = (w0 - w) / 2, shiftY = (h0 - h) / 2;      // scale 以中心为准，left/top 指的是没缩之前的左上角
+    const maxX = Math.max(pad, vw - w - pad);
+    const maxY = Math.max(pad, vh - h - pad);
+    let x, y, tries = 0;
+    const r = card.getBoundingClientRect();
+    do {
+      x = pad + Math.random() * (maxX - pad);
+      y = pad + Math.random() * (maxY - pad);
+      tries += 1;
+    } while (tries < 20 && x + w > r.left - 8 && x < r.right + 8 && y + h > r.top - 8 && y < r.bottom + 8);
+    no.style.left = (ox + x - shiftX) + 'px';
+    no.style.top = (oy + y - shiftY) + 'px';
+    if (surrendered()) {
+      no.textContent = noLabels[noLabels.length - 1];   // 同意！！
+      no.classList.add('giveup');
+      no.style.transform = 'scale(1.1)';
+      // 放大之后也要整个留在屏幕里
+      const cx = x + w / 2, cy = y + h / 2, gw = w0 * 1.1, gh = h0 * 1.1;
+      const gx = Math.min(Math.max(cx - gw / 2, pad), vw - gw - pad), gy = Math.min(Math.max(cy - gh / 2, pad), vh - gh - pad);
+      no.style.left = (ox + gx - (w0 - gw) / 2) + 'px';
+      no.style.top = (oy + gy - (h0 - gh) / 2) + 'px';
+    }
+  }
+  // 点完"开始放映"指针正好停在"不同意"上，那不算她要点 ——
+  // 指针先离开过一次，之后的 hover 才算数
+  let hoverArmed = false;
+  no.addEventListener('mouseleave', () => { hoverArmed = true; });
+  no.addEventListener('mouseenter', () => { if (hoverArmed) dodge(); });
+  no.addEventListener('touchstart', (e) => { if (surrendered()) return; e.preventDefault(); dodge(); }, { passive: false });
+  no.addEventListener('click', (e) => { e.preventDefault(); if (surrendered()) accept(); else dodge(); });
+
+  const bus = $('nightbus'), boardBtn = $('board'), again = $('again');
+  function readSaved() { try { return JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) { return null; } }
+  function save(date) { if (EDIT || readSaved()) return; try { localStorage.setItem(SAVE_KEY, JSON.stringify({ date })); } catch (e) {} }
+
+  // 答应之后的样子。restored = 她以前就答应过，这次是回来看的
+  function wonState(restored) {
+    wrap.classList.remove('mood-sad');
+    wrap.classList.add('mood-love');
+    no.remove();
+    mode = 'party';
+    $('stage').classList.add('won');
+    document.body.classList.add('won');   // 让场景层也知道她答应了
+    setTimeout(() => bus.classList.add('arrive'), restored ? 300 : 900);
+    // 巴士停稳了，才请她上车
+    setTimeout(() => { bus.classList.add('ready'); boardBtn.hidden = false; }, restored ? 2600 : 4200);
+  }
+  let accepted = false;
+  function accept() {
+    if (accepted || mode === 'party') return;
+    accepted = true;
+    save(today());
+    burst();
+    const celebrate = () => { wonState(false); win.hidden = false; };
+    // 有"答应之后"的影片：先让彩带飞一会儿，再放影片，放完巴士才开过来
+    if (AFTER_VIDEOS.length) leave(card, () => setTimeout(() => playCinema(AFTER_VIDEOS, celebrate, '跳过 ›'), reduce ? 0 : 1200));
+    else { wonState(false); leave(card, () => { win.hidden = false; }); }
+  }
+  yes.addEventListener('click', accept);
+
+  let boarded = false;
+  function board() {
+    if (boarded || !bus.classList.contains('ready')) return;
+    boarded = true;
+    boardBtn.hidden = true;
+    $('stage').classList.add('boarded');              // 龙猫们溜上车
+    burst();
+    setTimeout(() => { bus.classList.remove('ready'); bus.classList.add('depart'); }, reduce ? 0 : 1100);
+    setTimeout(() => { typeInto($('winSub'), LAST_WORDS, 90); again.hidden = false; }, reduce ? 200 : 2400);
+    setTimeout(goDay, reduce ? 0 : 1800);              // 巴士开走，天慢慢亮了
+  }
+  function goDay() {
+    document.body.classList.add('day');
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#8ecbf0');
+    if (reduce) return;
+    // 远远地，巴士带着他们在天上跑过去
+    const far = document.createElement('div');
+    far.className = 'farbus';
+    far.innerHTML = bus.innerHTML;
+    document.querySelector('.scene').appendChild(far);
+  }
+  boardBtn.addEventListener('click', board);
+  bus.addEventListener('click', board);
+  // 从头再看：答案和日期都还留着，只是这一次不直接跳到结尾
+  again.addEventListener('click', () => {
+    const u = new URL(location.href);
+    u.searchParams.set('replay', '1');
+    location.href = u.toString();
+  });
+
+  function today() {
+    const d = new Date();
+    return d.getFullYear() + ' 年 ' + (d.getMonth() + 1) + ' 月 ' + d.getDate() + ' 日';
+  }
+
+  // ---- 雨 & 庆祝 ----
+  const canvas = $('sky');
+  const ctx = canvas.getContext('2d');
+  let W, H, rain = [], bits = [], fx = [], mode = 'calm', cinemaOn = false;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dpr = window.devicePixelRatio || 1;
+  function resize() { W = canvas.width = window.innerWidth * dpr; H = canvas.height = window.innerHeight * dpr; }
+  window.addEventListener('resize', resize);
+  // 手机转个方向，跑掉的那个按钮别被甩到屏幕外面
+  window.addEventListener('resize', () => {
+    if (!no.isConnected || !no.classList.contains('fleeing')) return;
+    no.style.left = Math.min(parseFloat(no.style.left) || 0, window.innerWidth - no.offsetWidth - 12) + 'px';
+    no.style.top = Math.min(parseFloat(no.style.top) || 0, window.innerHeight - no.offsetHeight - 12) + 'px';
+  });
+  resize();
+
+  function makeDrop() {
+    const z = 0.4 + Math.random() * 0.8;
+    return { x: Math.random() * (W + 200 * dpr), y: -20 * dpr - Math.random() * H, len: (10 + 16 * z) * dpr, v: (9 + 9 * z) * dpr, a: 0.10 + z * 0.2, z };
+  }
+  for (let k = 0; k < 160; k++) rain.push(makeDrop());
+
+  function makeBit() {
+    const kind = Math.random() < 0.55 ? 'heart' : 'petal';
+    const s = (kind === 'petal' ? 5 + Math.random() * 7 : 8 + Math.random() * 14) * dpr;
+    return {
+      kind, s, x: Math.random() * W, y: H + s,
+      vx: (Math.random() - 0.5) * 1.2 * dpr, vy: -(2 + Math.random() * 4) * dpr,
+      rot: Math.random() * Math.PI * 2, vr: (Math.random() - 0.5) * 0.03, phase: Math.random() * 6,
+      color: kind === 'heart' ? ['#e2678a', '#f6a5bd', '#ffd1dc', '#ffd98a'][Math.floor(Math.random() * 4)] : ['#f9d5d3', '#fbe3e0', '#ffe9b3'][Math.floor(Math.random() * 3)],
+      alpha: 0.6 + Math.random() * 0.4,
+    };
+  }
+  // 一阵风吹过来的叶子（影片放完，用它把画面换掉）
+  function makeLeaf() {
+    const s = (9 + Math.random() * 15) * dpr;
+    return {
+      kind: 'leaf', s,
+      x: -s * 4 - Math.random() * W * 0.95,
+      y: Math.random() * H * 0.92,
+      vx: (7 + Math.random() * 10) * dpr,
+      vy: (0.3 + Math.random() * 1.1) * dpr,
+      rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.26,
+      phase: Math.random() * 6, amp: (0.7 + Math.random() * 1.8) * dpr,
+      color: ['#7fb26c', '#9cc47f', '#5f9455', '#c9a227', '#d8894d', '#b5623a'][Math.floor(Math.random() * 6)],
+      alpha: 0.75 + Math.random() * 0.25,
+    };
+  }
+  function gust() {
+    const n = reduce ? 12 : 52;
+    for (let k = 0; k < n; k++) bits.push(makeLeaf());
+  }
+  function sweep() {
+    canvas.style.zIndex = '5';                 // 让叶子盖在影院上面
+    gust();
+    setTimeout(() => { canvas.style.zIndex = ''; }, 2800);
+  }
+
+  function drawBit(b) {
+    ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.rot); ctx.globalAlpha = b.alpha; ctx.fillStyle = b.color;
+    const s = b.s; ctx.beginPath();
+    if (b.kind === 'acorn') {
+      ctx.ellipse(0, s * .12, s * .46, s * .6, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#7a5530'; ctx.beginPath();
+      ctx.ellipse(0, -s * .22, s * .52, s * .34, 0, Math.PI, Math.PI * 2); ctx.fill();
+      ctx.fillRect(-s * .05, -s * .72, s * .1, s * .2);
+      ctx.restore(); return;
+    }
+    if (b.kind === 'leaf') {
+      ctx.moveTo(0, -s); ctx.quadraticCurveTo(s * .76, 0, 0, s); ctx.quadraticCurveTo(-s * .76, 0, 0, -s);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(20, 30, 20, .22)'; ctx.lineWidth = Math.max(1, s * .09);
+      ctx.beginPath(); ctx.moveTo(0, -s * .82); ctx.lineTo(0, s * .82); ctx.stroke();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'petal') { ctx.moveTo(0, -s); ctx.quadraticCurveTo(s * .9, -s * .2, 0, s); ctx.quadraticCurveTo(-s * .9, -s * .2, 0, -s); }
+    else { ctx.moveTo(0, s * 0.35); ctx.bezierCurveTo(-s * 0.6, -s * 0.2, -s * 0.3, -s * 0.6, 0, -s * 0.25); ctx.bezierCurveTo(s * 0.3, -s * 0.6, s * 0.6, -s * 0.2, 0, s * 0.35); }
+    ctx.fill(); ctx.restore();
+  }
+  function burst() { for (let i = 0; i < 120; i++) bits.push(makeBit()); }
+  // 从某一点冒出来的几颗小爱心，飘一小段就散了
+  function puff(x, y, n) {
+    if (reduce) return;
+    for (let k = 0; k < n; k++) {
+      const a0 = 0.8 + Math.random() * 0.2;
+      bits.push({
+        kind: 'heart', s: (8 + Math.random() * 9) * dpr,
+        x: (x + (Math.random() - 0.5) * 40) * dpr, y: (y + (Math.random() - 0.5) * 16) * dpr,
+        vx: (Math.random() - 0.5) * 1.6 * dpr, vy: -(1.2 + Math.random() * 2.2) * dpr,
+        rot: (Math.random() - 0.5) * 0.6, vr: (Math.random() - 0.5) * 0.03, phase: Math.random() * 6,
+        color: ['#e2678a', '#f6a5bd', '#ffd1dc', '#ffd98a'][Math.floor(Math.random() * 4)],
+        alpha: a0, a0, life: 60 + Math.random() * 40,
+      });
+    }
+  }
+  // 点在天上是流星，点在路面是涟漪，别的地方闪一下
+  function spark(type, x, y) {
+    if (reduce) return;
+    const f = { type, x: x * dpr, y: y * dpr, life: 1 };
+    if (type === 'shoot') { f.vx = (x < window.innerWidth / 2 ? 1 : -1) * (9 + Math.random() * 4) * dpr; f.vy = (4 + Math.random() * 2) * dpr; }
+    fx.push(f);
+  }
+  function drawFx(f) {
+    const a = Math.max(0, f.life);
+    if (f.type === 'ripple') {
+      ctx.lineWidth = 1.4 * dpr;
+      ctx.strokeStyle = 'rgba(210, 225, 250, ' + (a * 0.75).toFixed(3) + ')';
+      for (const lag of [0, 0.28]) {
+        const p = 1 - f.life - lag;
+        if (p <= 0) continue;
+        ctx.beginPath(); ctx.ellipse(f.x, f.y, p * 52 * dpr, p * 15 * dpr, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+      f.life -= 0.028;
+    } else if (f.type === 'shoot') {
+      const tx = f.x - f.vx * 9, ty = f.y - f.vy * 9;
+      const g = ctx.createLinearGradient(f.x, f.y, tx, ty);
+      g.addColorStop(0, 'rgba(255, 250, 225, ' + a.toFixed(3) + ')'); g.addColorStop(1, 'rgba(255, 250, 225, 0)');
+      ctx.strokeStyle = g; ctx.lineWidth = 2 * dpr;
+      ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.lineTo(tx, ty); ctx.stroke();
+      ctx.fillStyle = 'rgba(255, 253, 240, ' + a.toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(f.x, f.y, 2.2 * dpr, 0, Math.PI * 2); ctx.fill();
+      f.x += f.vx; f.y += f.vy; f.life -= 0.024;
+    } else {
+      const s = (4 + (1 - f.life) * 9) * dpr;
+      ctx.fillStyle = 'rgba(255, 236, 170, ' + a.toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(f.x, f.y - s);
+      ctx.quadraticCurveTo(f.x, f.y, f.x + s, f.y); ctx.quadraticCurveTo(f.x, f.y, f.x, f.y + s);
+      ctx.quadraticCurveTo(f.x, f.y, f.x - s, f.y); ctx.quadraticCurveTo(f.x, f.y, f.x, f.y - s);
+      ctx.fill();
+      f.life -= 0.04;
+    }
+  }
+
+  let rainLevel = 1;
+  function tick() {
+    requestAnimationFrame(tick);
+    // 放影片的时候雨被影院整个盖住了，不用画，省电
+    if (cinemaOn && !bits.length && !fx.length) return;
+    ctx.clearRect(0, 0, W, H);
+    // 雨：答应之后慢慢停
+    if (mode === 'party') rainLevel = Math.max(0, rainLevel - 0.004);
+    ctx.lineCap = 'round';
+    for (const d of rain) {
+      if (!reduce) {                                    // 减少动态效果：雨就停在半空，不落
+        d.y += d.v; d.x -= d.v * 0.18;
+        if (d.y > H + d.len) { Object.assign(d, makeDrop()); d.y = -d.len; }
+      }
+      if (rainLevel <= 0.02) continue;
+      ctx.strokeStyle = 'rgba(200, 216, 245, ' + (d.a * rainLevel).toFixed(3) + ')';
+      ctx.lineWidth = (0.8 + d.z * 0.8) * dpr;
+      ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * 0.18, d.y - d.len); ctx.stroke();
+    }
+    if (mode === 'party' && bits.length < 80 && Math.random() < 0.3) bits.push(makeBit());
+    bits = bits.filter(b => b.y > -b.s * 3 && b.x < W + b.s * 6 && !(b.life <= 0));
+    for (const b of bits) {
+      b.phase += 0.02;
+      if (b.life != null) {                              // 有寿命的：慢慢淡掉；有重量的：往下掉
+        b.life -= 1; b.alpha = b.a0 * Math.min(1, b.life / 30);
+        if (b.g) b.vy += b.g;
+      }
+      if (b.kind === 'leaf') { b.x += b.vx; b.y += b.vy + Math.sin(b.phase * 1.8) * b.amp; }
+      else { b.x += b.vx + Math.sin(b.phase) * 0.3 * dpr; b.y += b.vy; }
+      b.rot += b.vr;
+      drawBit(b);
+    }
+    fx = fx.filter(f => f.life > 0);
+    for (const f of fx) drawFx(f);
+  }
+  if (reduce) { for (const d of rain) d.y = Math.random() * H; }
+  tick();
+
+  // ---- 可以碰的小东西 ----
+  const stage = $('stage'), totoroSvg = wrap.querySelector('.totoro'), pupils = wrap.querySelector('.pupils');
+  // 把一个一次性的动画重新放一遍
+  function replay(el, cls, ms) {
+    el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls);
+    clearTimeout(el['_' + cls]);
+    el['_' + cls] = setTimeout(() => el.classList.remove(cls), ms);
+  }
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  wrap.appendChild(bubble);
+  function say(text) {
+    bubble.textContent = text;
+    bubble.classList.add('show');
+    clearTimeout(say._t);
+    say._t = setTimeout(() => bubble.classList.remove('show'), 2200);
+  }
+  // 点龙猫：跳一下，说句话，冒几颗心
+  let pokes = 0;
+  wrap.addEventListener('click', () => {
+    const happy = mode === 'party';
+    const lines = happy ? TOTORO_HAPPY : TOTORO_SAYS;
+    say(lines[pokes++ % lines.length]);
+    replay(wrap, 'poke', 600);
+    const r = totoroSvg.getBoundingClientRect();
+    puff(r.left + r.width * 0.5, r.top + r.height * 0.45, happy ? 6 : 3);
+  });
+  // 点脚边那包叶子：橡果蹦出来
+  const gift = wrap.querySelector('.gift');
+  gift.addEventListener('click', (e) => {
+    e.stopPropagation();
+    say(GIFT_SAYS);
+    replay(gift, 'shake', 600);
+    if (reduce) return;
+    const r = gift.getBoundingClientRect();
+    for (let k = 0; k < 5; k++) {
+      bits.push({
+        kind: 'acorn', s: (7 + Math.random() * 4) * dpr, color: '#b98a4b',
+        x: (r.left + r.width / 2) * dpr, y: (r.top + r.height * 0.3) * dpr,
+        vx: (Math.random() - 0.5) * 5 * dpr, vy: -(4.5 + Math.random() * 3) * dpr, g: 0.26 * dpr,
+        rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3, phase: 0,
+        alpha: 1, a0: 1, life: 70,
+      });
+    }
+  });
+  // 点中龙猫和小龙猫：一起跳一下
+  const littles = wrap.querySelector('.littles');
+  littles.addEventListener('click', (e) => {
+    e.stopPropagation();
+    replay(littles, 'jump', 1500);
+    const r = littles.getBoundingClientRect();
+    puff(r.left + r.width * 0.4, r.top + r.height * 0.3, 2);
+  });
+  // 龙猫的眼珠跟着指头转
+  function look(x, y) {
+    const r = totoroSvg.getBoundingClientRect();
+    const dx = x - (r.left + r.width * 0.5), dy = y - (r.top + r.height * 0.52);
+    const len = Math.hypot(dx, dy) || 1, k = Math.min(1, len / 140);
+    pupils.style.transform = 'translate(' + (dx / len * 3 * k).toFixed(2) + 'px,' + (dy / len * 2.6 * k).toFixed(2) + 'px)';
+  }
+  // 小煤球：靠近了就往旁边躲
+  const dustEls = Array.from(document.querySelectorAll('.scene .dust'));
+  function scare(x, y) {
+    if (reduce || y < window.innerHeight * 0.7) return;
+    for (const el of dustEls) {
+      const cx = el.offsetLeft + el.offsetWidth / 2, cy = el.offsetTop + el.offsetHeight / 2;
+      const dx = cx - x, dy = cy - y, d = Math.hypot(dx, dy);
+      if (d > 74) continue;
+      const push = (74 - d) * 0.9 + 16, ux = d ? dx / d : (Math.random() < 0.5 ? -1 : 1), uy = d ? dy / d : 0;
+      el.style.translate = (ux * push).toFixed(0) + 'px ' + (uy * push * 0.5 - 8).toFixed(0) + 'px';
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.style.translate = ''; }, 900);
+    }
+  }
+  // 萤火虫：平时看不见，关了路灯才出来
+  let flies = '';
+  for (let k = 0; k < 14; k++) {
+    flies += '<i class="firefly" style="left:' + (4 + Math.random() * 92).toFixed(1) + '%;top:' + (30 + Math.random() * 48).toFixed(1) +
+      '%;--x:' + ((Math.random() - 0.5) * 120).toFixed(0) + 'px;--y:' + ((Math.random() - 0.5) * 80).toFixed(0) +
+      'px;--d:' + (4 + Math.random() * 5).toFixed(1) + 's;--b:' + (1.6 + Math.random() * 2.4).toFixed(1) +
+      's;animation-delay:-' + (Math.random() * 5).toFixed(1) + 's"></i>';
+  }
+  $('fireflies').innerHTML = flies;
+  // 路灯和那排小伙伴都在背景层里，点不到，所以按位置来认
+  const lampEl = document.querySelector('.lamp'), glowEl = $('glow'), friendEl = document.querySelector('.friend');
+  function spot(x, y) {
+    let r = lampEl.getBoundingClientRect();
+    if (x > r.left - 16 && x < r.right + 6 && y > r.top - 6 && y < r.top + 110) return 'lamp';
+    r = glowEl.getBoundingClientRect();          // 灯柱常被卡片挡住，所以天上那团光也算
+    if (Math.hypot(x - (r.left + r.width * 0.7), y - (r.top + r.height * 0.22)) < 80) return 'lamp';
+    if (friendEl && mode !== 'party') {
+      r = friendEl.getBoundingClientRect();
+      if (x > r.left && x < r.right && y > r.top && y < r.bottom) return 'friend';
+    }
+    return '';
+  }
+  const busy = (t) => !t || !t.closest || !!t.closest('.card, button, .totoro-wrap, .cinema, video, input, .cover');
+  document.addEventListener('pointerdown', (e) => {
+    if (cinemaOn || e.button > 0) return;
+    const x = e.clientX, y = e.clientY;
+    look(x, y);
+    if (busy(e.target)) return;
+    scare(x, y);
+    const s = spot(x, y);
+    if (s === 'lamp') { document.body.classList.toggle('lamp-off'); spark('twinkle', x, y); }
+    else if (s === 'friend') { replay(friendEl, 'boing', 650); puff(x, y - 10, 4); }
+    else if (mode === 'party') puff(x, y, 5);
+    else if (y > window.innerHeight * 0.83) spark('ripple', x, y);
+    else { spark('twinkle', x, y); if (y < window.innerHeight * 0.6) spark('shoot', x, y); }
+  });
+  let moveEv = null;
+  document.addEventListener('pointermove', (e) => {
+    const waiting = !!moveEv;
+    moveEv = e;
+    if (waiting) return;
+    requestAnimationFrame(() => {
+      const ev = moveEv; moveEv = null;
+      if (cinemaOn) return;
+      look(ev.clientX, ev.clientY);
+      if (ev.pointerType !== 'mouse') return;
+      scare(ev.clientX, ev.clientY);
+      stage.style.cursor = !busy(ev.target) && spot(ev.clientX, ev.clientY) ? 'pointer' : '';
+    });
+  });
+
+  // 她已经答应过了？再打开就直接回到那一刻，印章上留着第一次答应那天的日期
+  const saved = !EDIT && readSaved();
+  if (saved && saved.date) {
+    $('stampLine').textContent = saved.date + ' · ' + ME + ' 敬上';
+    if (!params.has('replay')) {
+      intro.hidden = true;
+      win.hidden = false;
+      again.hidden = false;
+      wonState(true);
+      document.addEventListener('pointerdown', startBgm, { once: true });   // 音乐要等她碰一下屏幕才放得出来
+    }
+  }
+})();
+</script>
+
+
+</body>
+</html>
