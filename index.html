@@ -647,6 +647,8 @@
     position: absolute; left: 0; right: 0; top: calc(50% + min(100px, 26vw) + 34px); text-align: center;
     color: #f6dce5; font-size: 14px; letter-spacing: .3em; animation: hintBlink 2s ease-in-out infinite;
   }
+  .cover.playing .env { animation: envFloat 3.2s ease-in-out infinite, envWiggle .5s ease; }
+  @keyframes envWiggle { 0%,100% { rotate: 0deg; } 25% { rotate: -4deg; } 75% { rotate: 4deg; } }
   @keyframes hintBlink { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
 
   .leaving { animation: fadeout .4s ease both !important; }
@@ -1016,7 +1018,8 @@
   // 按播放顺序写在下面。也可以在启动页点"添加影片"临时选择。
   const VIDEOS = [
     'videos/1-light.mp4',   // 手机上秒开；原画质是 videos/1.mp4（91MB，网络慢会转圈）
-    'videos/2-new.mp4',     // 第二段；原片是 26C4C208-….MOV（HEVC，浏览器多半放不动，已转好）
+    'videos/3-new.mp4',     // 第二段；原片是 copy_AD2795A5-….MOV（iPhone HDR，已转成普通色彩）
+    'videos/2-new.mp4',     // 第三段；原片是 26C4C208-….MOV（HEVC，浏览器多半放不动，已转好）
     // 还有别的就照着上面一行往下加，按播放顺序
   ];
   // 她点了"同意"之后再放的影片；不想要就写成 []
@@ -1174,6 +1177,8 @@
   })();
 
   const bgm = $('bgm'), musicBtn = $('music');
+  // iPhone 开着静音键时，接到 Web Audio 的声音会被一起静掉 —— 告诉它这是"在放音乐"
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
   let ducked = false, musicOn = false, useLive = !BGM, vol = 0, fadeTimer = null;
   if (BGM) {
     bgm.src = BGM;
@@ -1244,11 +1249,19 @@
     if (musicOn || musicPaused) ['touchend', 'click', 'keydown'].forEach(t => document.removeEventListener(t, unlock, true));
   };
   ['touchend', 'click', 'keydown'].forEach(t => document.addEventListener(t, unlock, true));
-  const cover = $('cover');
+  const cover = $('cover'), coverHint = cover.querySelector('.hint');
+  let coverTapped = false;
   function openCover() {
     if (cover.classList.contains('open')) return;
     wireGain();
     startBgm();
+    // 手机上要先碰一下才有声音：第一下只让音乐响起来，信封还合着；再碰一下才拆开
+    if (!musicOn && !coverTapped && !musicPaused) {
+      coverTapped = true;
+      cover.classList.add('playing');
+      coverHint.textContent = '♪ 再轻触一下，拆开信';
+      return;
+    }
     cover.classList.add('open');
     setTimeout(() => cover.remove(), 1000);
   }

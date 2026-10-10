@@ -5,6 +5,7 @@ index.backup*.html
 videos/*
 !videos/1-light.mp4
 !videos/2-new.mp4
+!videos/3-new.mp4
 
 # 没用到的大图（网页用的是压过的 wallpaper-web.jpg）
 images/wallpaper.jpg
